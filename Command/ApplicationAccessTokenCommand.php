@@ -54,6 +54,12 @@ class ApplicationAccessTokenCommand extends Command
 	}
 
 
+	/**
+	 * Get application access token
+	 * 
+	 * @return string access token
+	 * @throws \FacebookApiException
+	 */
 	public function getAccessToken() {
 		$facebook = $this->container->get('fos_facebook.api');
 			
