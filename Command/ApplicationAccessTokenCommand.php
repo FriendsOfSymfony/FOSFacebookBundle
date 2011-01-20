@@ -16,6 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ApplicationAccessTokenCommand extends Command
 {
 	static private $oathAccessTokenLocation = 'https://graph.facebook.com/oauth/access_token';
+	
+	
+	/**
+	 * Facebook SDK 
+	 * @var \Facebook
+	 */
+	private $facebookSdk;
 
 
 	protected function configure()
@@ -52,6 +59,30 @@ class ApplicationAccessTokenCommand extends Command
 			$output->writeln('');
 		}
 	}
+	
+	
+	
+	/**
+	 * Set Facebook SDK
+	 * 
+	 * @param \Facebook $facebookSdk
+	 */
+	public function setFacebook(\Facebook $facebookSdk) {
+		$this->facebookSdk = $facebookSdk;
+	}
+	
+
+	/**
+	 * Get Facebook SDK
+	 * @return \Facebook
+	 */
+	public function getFacebook() {
+		if (null == $this->facebookSdk) {
+			return $this->container->get('fos_facebook.api');
+		}
+		
+		return $this->facebookSdk;
+	}
 
 
 	/**
@@ -61,7 +92,7 @@ class ApplicationAccessTokenCommand extends Command
 	 * @throws \FacebookApiException
 	 */
 	public function getAccessToken() {
-		$facebook = $this->container->get('fos_facebook.api');
+		$facebook = $this->getFacebook();
 			
 		$params = array('grant_type' => 'client_credentials', 'client_id' => $facebook->getAppId(), 'client_secret' => $facebook->getApiSecret());
 
