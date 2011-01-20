@@ -34,7 +34,15 @@ class ApplicationAccessTokenCommand extends Command
 		->setDefinition(array(
 		new InputOption('plain', null, InputOption::VALUE_NONE, 'To output result as plain text'),
 		))
-		->setDescription('Get application access token');
+		->setDescription('Get application access token')
+		->setHelp(<<<EOF
+Construct an OAuth access token associated with your application.
+OAuth access tokens have no active user session, but allow 
+you to make administrative calls that do not require an active user.
+
+EOF
+
+		);
 	}
 
 

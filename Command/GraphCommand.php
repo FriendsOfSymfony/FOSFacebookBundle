@@ -30,7 +30,7 @@ class GraphCommand extends Command
                 new InputOption('access-token', 'at', InputOption::VALUE_OPTIONAL, 'Access token'),
                 new InputOption('json', null, InputOption::VALUE_NONE, 'To output result as plain JSON'),
             ))
-            ->setDescription('Get graph')
+            ->setDescription('Get properties of an object by requesting graph.facebook.com')
             ->setHelp(<<<EOF
 The <info>facebook:graph</info> get properties of an object by requesting https://graph.facebook.com.
 

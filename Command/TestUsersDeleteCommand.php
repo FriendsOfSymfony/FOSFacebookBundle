@@ -13,15 +13,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TestUsersListCommand extends Command
+class TestUsersDeleteCommand extends Command
 {
-
-	static private $testUsersPath = '/accounts/test-users';
-
 
 	/**
 	 * ApplicationAccessTokenCommand for get access_token
-	 *
+	 * 
 	 * @var ApplicationAccessTokenCommand
 	 */
 	private $applicationAccessTokenCommand;
@@ -31,61 +28,34 @@ class TestUsersListCommand extends Command
 		parent::configure();
 
 		$this
-		->setName('facebook:test-users:list')
+		->setName('facebook:test-users:delete')
 		->setDefinition(array(
-		new InputOption('json', null, InputOption::VALUE_NONE, 'To output result as plain JSON'),
+		    new InputArgument('test_user_id', InputArgument::REQUIRED, 'User id'),
+			new InputOption('json', null, InputOption::VALUE_NONE, 'To output result as plain JSON'),
 		))
-		->setDescription('List test users associated with your application.')
+		->setDescription('Delete a test user associated with your application.')
 		->setHelp(<<<EOF
-You can access the test users associated with an application by using the Graph API with the application access token.
+You can delete an existing test user like any other object in the graph.
 
 API
+<comment>DELETE  /test_user_id</comment>
 
-<comment>GET  /app_id/accounts/test-users</comment>
-
-
-Response:
-
-<comment>
-{
- "data" [
-   { 
-    "id": "1231....",  
-    "access_token":"1223134..." , 
-    "login_url":"https://www.facebook.com/platform/test_account.." 
-   }
-   { 
-    "id": "1231....",  
-    "access_token":"1223134..." , 
-    "login_url":"https://www.facebook.com/platform/test_account.." 
-   }
- ]
-}
-</comment>
-
-<comment>id</comment>
-User id of the test user
-
-<comment>access_token</comment>
-You can use this access token to make API calls on behalf of the test user. 
-This is available only if your application has been installed by the test user.
-
-<comment>login_url</comment>
-You can login as the test user by going to this url. 
-This expires on first use or after 10 minutes whichever happens first.
+with access token of the test user.
+Response: true on success, false otherwise
 
 EOF
 			);
+		
 	}
-
-
+	
+	
 	/**
-	 * @param ApplicationAccessTokenCommand $command
+	 * @param ApplicationAccessTokenCommand $command 
 	 */
 	public function setApplicationAccessTokenCommand(ApplicationAccessTokenCommand $command) {
 		$this->applicationAccessTokenCommand = $command;
 	}
-
+	
 	/**
 	 * @return ApplicationAccessTokenCommand
 	 */
@@ -95,16 +65,16 @@ EOF
 		}
 		return $this->applicationAccessTokenCommand;
 	}
-
-
-
+	
+	
+	
 	private function getApplicationAccessToken(\Facebook $facebook) {
 		$applicationAccessTokenCommand = $this->getApplicationAccessTokenCommand();
 		$applicationAccessTokenCommand->setFacebook($facebook);
-
+		
 		return $applicationAccessTokenCommand->getAccessToken();
 	}
-
+	
 
 
 	/**
@@ -121,26 +91,21 @@ EOF
 
 
 		$appId = $facebook->getAppId();
-
+		
+		
+			
 		$params = array('access_token' => $this->getApplicationAccessToken($facebook));
 
 
-		$result = $facebook->api($appId.self::$testUsersPath, 'GET', $params);
+		$result = $facebook->api($input->getArgument('test_user_id'), 'DELETE', $params);
 
 		if ($input->getOption('json')) {
 			$output->writeln(json_encode($result), Output::OUTPUT_RAW);
 		} else {
-			if (empty($result['data'])) {
-				$output->writeln('Empty result. use facebook:test-users:create');
+			if ($result) {
+				$output->writeln('User was deleted.');
 			} else {
-				$output->writeln('Test Users:');
-				$output->writeln('');
-				foreach ($result['data'] as $user) {
-					$output->writeln('id:              <comment>'.$user['id'].'</comment>');
-					$output->writeln('login_url:       <comment>'.$user['login_url'].'</comment>');
-					$output->writeln('---------------------------------------------------------------------------------');
-				}
-				$output->writeln('');
+				$output->writeln('User wasn\'t deleted.');
 			}
 		}
 	}

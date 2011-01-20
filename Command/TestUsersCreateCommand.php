@@ -37,7 +37,30 @@ class TestUsersCreateCommand extends Command
 		new InputOption('permissions', 'p', InputOption::VALUE_OPTIONAL, 'This is a comma-separated list of extended permissions(http://developers.facebook.com/docs/authentication/permissions). Your application is granted these permissions for the new test user if ‘installed’ is true.'),
 		new InputOption('json', null, InputOption::VALUE_NONE, 'To output result as plain JSON'),
 		))
-		->setDescription('Create a test user associated with your application.');
+		->setDescription('Create a test user associated with your application.')
+		->setHelp(<<<EOF
+You can create a test user associated with a particular application using the Graph API with the application access token.
+ 
+<comment>POST /app_id/accounts/test-users?installed=true&permissions=read_stream</comment>
+
+Parameters:
+
+You can specify whether this user has already installed your application 
+as well as the set of permissions that your application is granted for 
+this user by default upon creation.
+
+<comment>installed</comment> 
+This is a Boolean parameter to specify whether your
+application should be installed for the test user 
+at the time of creation. It is true by default.
+                             
+<comment>permissions</comment>
+This is a comma-separated list of extended permissions.
+
+Your application is granted these permissions for the new test user if ‘installed’ is true.
+EOF
+		);
+		
 	}
 	
 	
