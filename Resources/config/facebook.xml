@@ -1,62 +1,76 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://www.symfony-project.org/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
 
-  <parameters>
-    <!-- parameters used in both the js and php api classes -->
-    <parameter key="fos_facebook.file">null</parameter>
-    <parameter key="fos_facebook.app_id">null</parameter>
-    <parameter key="fos_facebook.cookie">false</parameter>
+	<parameters>
+		<!-- parameters used in both the js and php api classes -->
+		<parameter key="fos_facebook.file">null</parameter>
+		<parameter key="fos_facebook.app_id">null</parameter>
+		<parameter key="fos_facebook.cookie">false</parameter>
 
-    <!-- parameters used by the php api -->
-    <parameter key="fos_facebook.class">Facebook</parameter>
-    <parameter key="fos_facebook.secret">null</parameter>
-    <parameter key="fos_facebook.domain">null</parameter>
+		<!-- parameters used by the php api -->
+		<parameter key="fos_facebook.class">Facebook</parameter>
+		<parameter key="fos_facebook.secret">null</parameter>
+		<parameter key="fos_facebook.domain">null</parameter>
 
-    <!-- parameters used by the js api -->
-    <parameter key="fos_facebook.logging">%kernel.debug%</parameter>
-    <parameter key="fos_facebook.culture">en_US</parameter>
+		<!-- parameters used by the js api -->
+		<parameter key="fos_facebook.logging">%kernel.debug%</parameter>
+		<parameter key="fos_facebook.culture">en_US</parameter>
 
-    <parameter key="fos_facebook.permissions" type="collection"></parameter>
-    
-    <parameter key="fos_facebook.login_url.cancel_url">null</parameter>
-    <parameter key="fos_facebook.login_url.canvas">0</parameter>
-    <parameter key="fos_facebook.login_url.display">page</parameter>
-    <parameter key="fos_facebook.login_url.fbconnect">1</parameter>
-    <parameter key="fos_facebook.login_url.next">null</parameter>
+		<parameter key="fos_facebook.permissions" type="collection"></parameter>
 
-    <parameter key="fos_facebook.helper.class">Bundle\FOS\FacebookBundle\Templating\Helper\FacebookHelper</parameter>
-    <parameter key="fos_facebook.twig.extension.class">Bundle\FOS\FacebookBundle\Twig\Extension\FacebookExtension</parameter>
-  </parameters>
+		<parameter key="fos_facebook.login_url.cancel_url">null</parameter>
+		<parameter key="fos_facebook.login_url.canvas">0</parameter>
+		<parameter key="fos_facebook.login_url.display">page</parameter>
+		<parameter key="fos_facebook.login_url.fbconnect">1</parameter>
+		<parameter key="fos_facebook.login_url.next">null</parameter>
 
-  <services>
+		<parameter key="fos_facebook.helper.class">Bundle\FOS\FacebookBundle\Templating\Helper\FacebookHelper</parameter>
 
-    <service id="fos_facebook.api" class="%fos_facebook.class%">
-      <file>%fos_facebook.file%</file>
-      <argument type="collection">
-        <argument key="appId">%fos_facebook.app_id%</argument>
-        <argument key="secret">%fos_facebook.secret%</argument>
-        <argument key="cookie">%fos_facebook.cookie%</argument>
-        <argument key="domain">%fos_facebook.domain%</argument>
-      </argument>
-    </service>
+		<parameter key="fos_facebook.helper.fbmetatags.class">Bundle\FOS\FacebookBundle\Templating\Helper\FbMetatagsHelper</parameter>
+		<parameter key="fos_facebook.helper.ogmetatags.class">Bundle\FOS\FacebookBundle\Templating\Helper\OgMetatagsHelper</parameter>
 
-    <service id="fos_facebook.helper" class="%fos_facebook.helper.class%">
-      <argument type="service" id="templating" />
-      <argument>%fos_facebook.app_id%</argument>
-      <argument>%fos_facebook.cookie%</argument>
-      <argument>%fos_facebook.logging%</argument>
-      <argument>%fos_facebook.culture%</argument>
-      <argument>%fos_facebook.permissions%</argument>
-      <tag name="templating.helper" alias="facebook" />
-    </service>
+		<parameter key="fos_facebook.twig.extension.class">Bundle\FOS\FacebookBundle\Twig\Extension\FacebookExtension</parameter>
+	</parameters>
 
-    <service id="fos_facebook.twig" class="%fos_facebook.twig.extension.class%">
-      <argument type="service" id="fos_facebook.helper" />
-      <tag name="twig.extension" />
-    </service>
+	<services>
 
-  </services>
+		<service id="fos_facebook.api" class="%fos_facebook.class%">
+			<file>%fos_facebook.file%</file>
+			<argument type="collection">
+				<argument key="appId">%fos_facebook.app_id%</argument>
+				<argument key="secret">%fos_facebook.secret%</argument>
+				<argument key="cookie">%fos_facebook.cookie%</argument>
+				<argument key="domain">%fos_facebook.domain%</argument>
+			</argument>
+		</service>
+
+		<service id="fos_facebook.helper" class="%fos_facebook.helper.class%">
+			<argument type="service" id="templating" />
+			<argument>%fos_facebook.app_id%</argument>
+			<argument>%fos_facebook.cookie%</argument>
+			<argument>%fos_facebook.logging%</argument>
+			<argument>%fos_facebook.culture%</argument>
+			<argument>%fos_facebook.permissions%</argument>
+			<tag name="templating.helper" alias="facebook" />
+		</service>
+
+
+		<service id="fos_facebook.helper.ogmetatags" class="%fos_facebook.helper.ogmetatags.class%">
+			<tag name="templating.helper" alias="ogmetatags" />
+		</service>
+		
+		
+		<service id="fos_facebook.helper.fbmetatags" class="%fos_facebook.helper.fbmetatags.class%">
+			<argument>%fos_facebook.app_id%</argument>
+			<tag name="templating.helper" alias="fbmetatags" />
+		</service>
+		
+		<service id="fos_facebook.twig" class="%fos_facebook.twig.extension.class%">
+			<argument type="service" id="fos_facebook.helper" />
+			<tag name="twig.extension" />
+		</service>
+	</services>
 </container>

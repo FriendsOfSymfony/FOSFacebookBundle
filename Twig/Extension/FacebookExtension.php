@@ -2,7 +2,11 @@
 
 namespace Bundle\FOS\FacebookBundle\Twig\Extension;
 
-use Bundle\FOS\FacebookBundle\Twig\TokenParser\FacebookTokenParser;
+use Bundle\FOS\FacebookBundle\Twig\TokenParser\OgMetatagsTokenParser;
+use Bundle\FOS\FacebookBundle\Twig\TokenParser\OgMetatagTokenParser;
+use Bundle\FOS\FacebookBundle\Twig\TokenParser\FbMetatagsTokenParser;
+use Bundle\FOS\FacebookBundle\Twig\TokenParser\FbMetatagTokenParser;
+
 
 /**
  *
@@ -37,6 +41,28 @@ class FacebookExtension extends \Twig_Extension
     public function getName()
     {
         return 'facebook';
+    }
+    
+ /**
+     * Returns the token parser instance to add to the existing list.
+     *
+     * @return array An array of Twig_TokenParser instances
+     */
+    public function getTokenParsers()
+    {
+        return array(
+            // {% ogmetatag 'title' 'The Rock' %}
+            new OgMetatagTokenParser(),
+
+            // {% ogmetatags %}
+            new OgMetatagsTokenParser(),
+            
+            // {% fbmetatag 'admins' 'USER_ID' %}
+            new FbMetatagTokenParser(),
+
+            // {% fbmetatags %}
+            new FbMetatagsTokenParser(),
+        );
     }
 
     public function renderInitialize($parameters = array(), $name = null)
