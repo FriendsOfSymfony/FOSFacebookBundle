@@ -4,45 +4,20 @@ namespace Bundle\FOS\FacebookBundle\Command;
 
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TestUsersCreateCommand extends Command
+
+/**
+ * Create a test user associated with your application.
+ * 
+ * @author Marcin Sikoń <marcin.sikon@gmail.com>
+ */
+class TestUsersCreateCommand extends TestUsersCommand
 {
-
-    static private $testUsersPath = '/accounts/test-users';
-
-
-    /**
-     * ApplicationAccessTokenCommand for get access_token
-     *
-     * @var ApplicationAccessTokenCommand
-     */
-    private $applicationAccessTokenCommand;
-
-    /**
-     * @param ApplicationAccessTokenCommand $command
-     */
-    public function setApplicationAccessTokenCommand(ApplicationAccessTokenCommand $command) {
-        $this->applicationAccessTokenCommand = $command;
-    }
-
-    /**
-     * @return ApplicationAccessTokenCommand
-     */
-    public function getApplicationAccessTokenCommand() {
-        if (null == $this->applicationAccessTokenCommand) {
-            
-            return new ApplicationAccessTokenCommand();
-        }
-        
-        return $this->applicationAccessTokenCommand;
-    }
-
     protected function configure()
     {
         parent::configure();
@@ -82,8 +57,6 @@ EOF
 
 
 
-
-
     /**
      * Executes the current command.
      *
@@ -94,9 +67,13 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $facebook = $this->container->get('fos_facebook.api');
+        $facebook = $this->getFacebook();
 
         $appId = $facebook->getAppId();
+        
+        if (!$appId) {
+            throw new \FacebookApiException('Set app_id in config');
+        }
         
         $params = array('installed' => (bool) $input->getOption('installed'), 'access_token' => $this->getApplicationAccessToken($facebook));
 
@@ -105,7 +82,7 @@ EOF
             $params['permissions'] = $permissions;
         }
 
-        $result = $facebook->api($appId.self::$testUsersPath, 'POST', $params);
+        $result = $facebook->api($appId.self::TEST_USERS_PATH, 'POST', $params);
 
         if ($input->getOption('json')) {
             $output->writeln(json_encode($result), Output::OUTPUT_RAW);
@@ -118,13 +95,4 @@ EOF
             $output->writeln('');
         }
     }
-
-
-    private function getApplicationAccessToken(\Facebook $facebook) {
-        $applicationAccessTokenCommand = $this->getApplicationAccessTokenCommand();
-        $applicationAccessTokenCommand->setFacebook($facebook);
-
-        return $applicationAccessTokenCommand->getAccessToken();
-    }
-
 }

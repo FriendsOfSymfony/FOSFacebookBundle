@@ -4,47 +4,22 @@ namespace Bundle\FOS\FacebookBundle\Command;
 
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Get application access token
+ *
+ * @author Marcin Sikoń <marcin.sikon@gmail.com>
+ *
+ */
 class ApplicationAccessTokenCommand extends Command
 {
 
     static private $oathAccessTokenLocation = 'https://graph.facebook.com/oauth/access_token';
-
-    /**
-     * Facebook SDK
-     * @var \Facebook
-     */
-    private $facebookSdk;
-
-
-
-    /**
-     * Set Facebook SDK
-     *
-     * @param \Facebook $facebookSdk
-     */
-    public function setFacebook(\Facebook $facebookSdk) {
-        $this->facebookSdk = $facebookSdk;
-    }
-
-
-    /**
-     * Get Facebook SDK
-     * @return \Facebook
-     */
-    public function getFacebook() {
-        if (null == $this->facebookSdk) {
-            return $this->container->get('fos_facebook.api');
-        }
-
-        return $this->facebookSdk;
-    }
 
 
     /**
@@ -55,8 +30,20 @@ class ApplicationAccessTokenCommand extends Command
      */
     public function getAccessToken() {
         $facebook = $this->getFacebook();
+
+        $appId = $facebook->getAppId();
          
-        $params = array('grant_type' => 'client_credentials', 'client_id' => $facebook->getAppId(), 'client_secret' => $facebook->getApiSecret());
+        if (!$appId) {
+            throw new \FacebookApiException('Set app_id in config');
+        }
+
+        $apiSecret = $facebook->getApiSecret();
+
+        if (!$apiSecret) {
+            throw new \FacebookApiException('Set secret in config');
+        }
+
+        $params = array('grant_type' => 'client_credentials', 'client_id' => $appId, 'client_secret' => $apiSecret);
 
         $ch = curl_init();
 
@@ -125,7 +112,5 @@ EOF
             $output->writeln('');
         }
     }
-
-
 
 }

@@ -4,13 +4,19 @@ namespace Bundle\FOS\FacebookBundle\Command;
 
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Get properties of an object by requesting graph.facebook.com
+ * 
+ * @author Marcin Sikoń <marcin.sikon@gmail.com>
+ *
+ */
 class GraphCommand extends Command
 {
 
@@ -56,8 +62,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $facebook = $this->container->get('fos_facebook.api');
-        	
+        $facebook = $this->getFacebook();
 
         $path = $input->getArgument('path');
 

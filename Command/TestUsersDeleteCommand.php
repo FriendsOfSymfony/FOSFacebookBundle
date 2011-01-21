@@ -4,41 +4,20 @@ namespace Bundle\FOS\FacebookBundle\Command;
 
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TestUsersDeleteCommand extends Command
+
+/**
+ * Delete a test user associated with your application.
+ *
+ * @author Marcin Sikoń <marcin.sikon@gmail.com>
+ */
+class TestUsersDeleteCommand extends TestUsersCommand
 {
-
-    /**
-     * ApplicationAccessTokenCommand for get access_token
-     *
-     * @var ApplicationAccessTokenCommand
-     */
-    private $applicationAccessTokenCommand;
-
-    /**
-     * @param ApplicationAccessTokenCommand $command
-     */
-    public function setApplicationAccessTokenCommand(ApplicationAccessTokenCommand $command) {
-        $this->applicationAccessTokenCommand = $command;
-    }
-
-    /**
-     * @return ApplicationAccessTokenCommand
-     */
-    public function getApplicationAccessTokenCommand() {
-        if (null == $this->applicationAccessTokenCommand) {
-            
-            return new ApplicationAccessTokenCommand();
-        }
-        
-        return $this->applicationAccessTokenCommand;
-    }
 
     protected function configure()
     {
@@ -62,9 +41,7 @@ Response: true on success, false otherwise
 
 EOF
         );
-
     }
-
 
 
 
@@ -78,15 +55,15 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $facebook = $this->container->get('fos_facebook.api');
-
+        $facebook = $this->getFacebook();
 
         $appId = $facebook->getAppId();
 
+        if (!$appId) {
+            throw new \FacebookApiException('Set app_id in config');
+        }
 
-         
         $params = array('access_token' => $this->getApplicationAccessToken($facebook));
-
 
         $result = $facebook->api($input->getArgument('test_user_id'), 'DELETE', $params);
 
@@ -99,15 +76,6 @@ EOF
                 $output->writeln('User wasn\'t deleted.');
             }
         }
-    }
-
-
-
-    private function getApplicationAccessToken(\Facebook $facebook) {
-        $applicationAccessTokenCommand = $this->getApplicationAccessTokenCommand();
-        $applicationAccessTokenCommand->setFacebook($facebook);
-
-        return $applicationAccessTokenCommand->getAccessToken();
     }
 
 }
