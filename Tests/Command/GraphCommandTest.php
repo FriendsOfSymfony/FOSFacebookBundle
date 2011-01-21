@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 
 /**
- * 
+ *
  * @author Marcin Sikoń <marcin.sikon@gmail.com>
  *
  */
@@ -32,10 +32,11 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase
         ->with($this->equalTo('platform'), $this->equalTo($method), $this->equalTo(array()))
         ->will($this->returnValue('{id:"1234567890"}'));
 
-        $appication = new Application(new Kernel());
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+
         $command = new GraphCommand();
-        $command->setApplication($appication);
-        $command->setFacebook($facebook);
+        $command->setApplication($application);
 
         $commandTester = new CommandTester($command);
 
@@ -43,8 +44,9 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertRegExp("/1234567890/", $commandTester->getDisplay());
     }
+
     
-    
+
     /**
      * @test
      */
@@ -57,10 +59,11 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase
         ->with($this->equalTo('platform'), $this->equalTo('GET'), $this->equalTo(array('access_token' => 'access_token1234567890')))
         ->will($this->returnValue('{id:"1234567890"}'));
 
-        $appication = new Application(new Kernel());
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+
         $command = new GraphCommand();
-        $command->setApplication($appication);
-        $command->setFacebook($facebook);
+        $command->setApplication($application);
 
         $commandTester = new CommandTester($command);
 
@@ -77,14 +80,35 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase
     public function invalidMethod()
     {
         $facebook = $this->getMock('Facebook', array('api'));
-        $appication = new Application(new Kernel());
+
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+
         $command = new GraphCommand();
-        $command->setApplication($appication);
-        $command->setFacebook($facebook);
+        $command->setApplication($application);
 
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(array('command' => 'facebook:graph', 'path' => 'platform', '--method'=> 'FAIL'));
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function requiredArgument()
+    {
+        $facebook = $this->getMock('Facebook', array('api'));
+
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+
+        $command = new GraphCommand();
+        $command->setApplication($application);
+
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(array('command' => 'facebook:graph'));
     }
 
 

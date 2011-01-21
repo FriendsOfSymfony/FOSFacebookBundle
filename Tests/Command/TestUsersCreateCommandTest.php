@@ -31,7 +31,7 @@ class TestUsersCreateCommandTest extends \PHPUnit_Framework_TestCase
         ->expects($this->once())
         ->method('api')
         ->with($this->equalTo($appId.'/accounts/test-users'), $this->equalTo('POST'), $this->equalTo($params))
-        ->will($this->returnValue('{"id": "1231....","access_token":"1223134...","login_url":"https://www.facebook.com/platform/test_account.."}'));
+        ->will($this->returnValue(array("id"=> "1231....","access_token"=>"1223134...","login_url"=>"https://www.facebook.com/platform/test_account..")));
         
 
         $facebook
@@ -48,11 +48,12 @@ class TestUsersCreateCommandTest extends \PHPUnit_Framework_TestCase
         ->will($this->returnValue($accessToken));
 
 
-        $appication = new Application(new Kernel());
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+        
         $command = new TestUsersCreateCommand();
         $command->setApplicationAccessTokenCommand($applicationAccessTokenCommand);
-        $command->setApplication($appication);
-        $command->setFacebook($facebook);
+        $command->setApplication($application);
 
 
         $commandTester = new CommandTester($command);
@@ -82,12 +83,12 @@ class TestUsersCreateCommandTest extends \PHPUnit_Framework_TestCase
 
         $applicationAccessTokenCommand = $this->getMock('Bundle\\FOS\\FacebookBundle\\Command\\ApplicationAccessTokenCommand', array('getAccessToken'));
 
-
-        $appication = new Application(new Kernel());
+        $application = new Application(new Kernel());
+        $application->getKernel()->getContainer()->set('fos_facebook.api', $facebook);
+        
         $command = new TestUsersCreateCommand();
         $command->setApplicationAccessTokenCommand($applicationAccessTokenCommand);
-        $command->setApplication($appication);
-        $command->setFacebook($facebook);
+        $command->setApplication($application);
 
 
         $commandTester = new CommandTester($command);
@@ -98,10 +99,10 @@ class TestUsersCreateCommandTest extends \PHPUnit_Framework_TestCase
     public function provider()
     {
         return array(
-            array(true, 'publish_stream,offline_access', 12345678, 'asdsdfasfasdf', array('installed' => true, 'permissions' => 'publish_stream,offline_access', 'access_token' => 'asdsdfasfasdf')),
-            array(false, 'publish_stream', 12345678, 'asdsdfas', array('installed' => false, 'permissions' => 'publish_stream', 'access_token' => 'asdsdfas')),
-            array(false, null, 12345678, 'asdsdfasfasdf', array('installed' => false, 'access_token' => 'asdsdfasfasdf')),
-            array(false, 'publish_stream', 12345678, 'a', array('installed' => false, 'permissions' => 'publish_stream', 'access_token' => 'a')),
+            array(true, 'publish_stream,offline_access', 12345678, 'accesstoken', array('installed' => true, 'permissions' => 'publish_stream,offline_access', 'access_token' => 'accesstoken')),
+            array(false, 'publish_stream', 12345678, 'accesstoken', array('installed' => false, 'permissions' => 'publish_stream', 'access_token' => 'accesstoken')),
+            array(false, null, 12345678, 'accesstoken', array('installed' => false, 'access_token' => 'accesstoken')),
+            array(false, 'publish_stream', 12345678, 'accesstoken', array('installed' => false, 'permissions' => 'publish_stream', 'access_token' => 'accesstoken')),
         );
     }
 }
