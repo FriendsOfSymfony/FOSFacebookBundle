@@ -1,28 +1,36 @@
 Installation
 ============
 
-  1. Add this bundle and the Facebook PHP SDK to your project as Git submodules:
+  1. Add this bundle to your src/ dir and the Facebook PHP SDK to your vendor/ dir:
 
-          $ git submodule add git://github.com/FriendsOfSymfony/FacebookBundle.git src/Bundle/FOS/FacebookBundle
-          $ git submodule add git://github.com/facebook/php-sdk.git src/vendor/facebook
+          $ git submodule add git://github.com/FriendsOfSymfony/FacebookBundle.git src/FOS/FacebookBundle
+          $ git submodule add git://github.com/facebook/php-sdk.git vendor/facebook
 
-  2. Add this bundle to your application's kernel:
+  2. Add the FOS namespace to your autoloader:
 
-          // application/ApplicationKernel.php
+          // src/autoload.php
+          $loader->registerNamespaces(array(
+                'FOS' => __DIR__,
+                // your other namespaces
+          ));
+
+  3. Add this bundle to your application's kernel:
+
+          // app/ApplicationKernel.php
           public function registerBundles()
           {
               return array(
                   // ...
-                  new Bundle\FOS\FacebookBundle\FOSFacebookBundle(),
+                  new FOS\FacebookBundle\FOSFacebookBundle(),
                   // ...
               );
           }
 
-  3. Configure the `facebook` service in your config:
+  4. Configure the `facebook` service in your config:
 
           # application/config/config.yml
           fos_facebook.api:
-              file:   %kernel.root_dir%/../src/vendor/facebook/src/facebook.php
+              file:   %kernel.root_dir%/../vendor/facebook/src/facebook.php
               alias:  facebook
               app_id: 123456879
               secret: s3cr3t
@@ -30,7 +38,7 @@ Installation
 
           # application/config/config.xml
           <fos_facebook:api
-              file="%kernel.root_dir%/../src/vendor/facebook/src/facebook.php"
+              file="%kernel.root_dir%/../vendor/facebook/src/facebook.php"
               alias="facebook"
               app_id="123456879"
               secret="s3cr3t"
@@ -40,12 +48,12 @@ Installation
      If you do not include a `file` value in the config you will have to
      configure your application to autoload the `Facebook` class.
 
-  4. Add this configuration if you want to use the `security component`:
+  5. Add this configuration if you want to use the `security component`:
 
         # application/config/config.yml
           security.config:
               templates:
-                  - "%kernel.root_dir%/../src/Bundle/FOS/FacebookBundle/Resources/config/security_templates.xml"
+                  - "%kernel.root_dir%/../src/FOS/FacebookBundle/Resources/config/security_templates.xml"
 
               providers:
                   fos_facebook:

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Tests\DependencyInjection;
+namespace FOS\FacebookBundle\Tests\DependencyInjection;
 
-use Bundle\FOS\FacebookBundle\DependencyInjection\FacebookExtension;
+use FOS\FacebookBundle\DependencyInjection\FacebookExtension;
 
 class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
             ->with('fos_facebook.api')
             ->will($this->returnValue(false));
 
-        $extension = $this->getMockBuilder('Bundle\\FOS\\FacebookBundle\\DependencyInjection\\FacebookExtension')
+        $extension = $this->getMockBuilder('FOS\\FacebookBundle\\DependencyInjection\\FacebookExtension')
             ->setMethods(array('loadDefaults'))
             ->getMock();
         $extension
@@ -41,7 +41,7 @@ class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
             ->with('fos_facebook.api')
             ->will($this->returnValue(true));
 
-        $extension = $this->getMockBuilder('Bundle\\FOS\\FacebookBundle\\DependencyInjection\\FacebookExtension')
+        $extension = $this->getMockBuilder('FOS\\FacebookBundle\\DependencyInjection\\FacebookExtension')
             ->setMethods(array('loadDefaults'))
             ->getMock();
         $extension
@@ -67,7 +67,7 @@ class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
         $container
             ->expects($this->once())
             ->method('setAlias')
-            ->with($alias, 'fos_facebook');
+            ->with($alias, 'fos_facebook.api');
 
         $extension = new FacebookExtension();
         $extension->apiLoad(array('alias' => $alias), $container);

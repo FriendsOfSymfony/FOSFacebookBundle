@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Templating\Helper;
+namespace FOS\FacebookBundle\Templating\Helper;
 
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Templating\DelegatingEngine;

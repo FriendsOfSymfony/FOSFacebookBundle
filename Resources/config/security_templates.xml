@@ -6,7 +6,7 @@
 
     <services>
         
-        <service id="facebook.auth.factory" class="Bundle\FOS\FacebookBundle\DependencyInjection\Security\Factory\FacebookFactory" public="false">
+        <service id="facebook.auth.factory" class="FOS\FacebookBundle\DependencyInjection\Security\Factory\FacebookFactory" public="false">
             <tag name="security.listener.factory" />
         </service>
 

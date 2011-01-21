@@ -10,8 +10,8 @@ $loader->register();
 
 spl_autoload_register(function($class)
 {
-    if (0 === strpos($class, 'Bundle\\FOS\\FacebookBundle\\')) {
-        $path = implode('/', array_slice(explode('\\', $class), 3)).'.php';
+    if (0 === strpos($class, 'FOS\\FacebookBundle\\')) {
+        $path = implode('/', array_slice(explode('\\', $class), 2)).'.php';
         require_once __DIR__.'/../'.$path;
         return true;
     }

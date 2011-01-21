@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Security\EntryPoint;
+namespace FOS\FacebookBundle\Security\EntryPoint;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

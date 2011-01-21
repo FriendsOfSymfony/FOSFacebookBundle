@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Security\Firewall;
+namespace FOS\FacebookBundle\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Security\Firewall\PreAuthenticatedListener;

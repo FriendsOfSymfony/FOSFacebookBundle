@@ -27,8 +27,8 @@
     <parameter key="fos_facebook.login_url.fbconnect">1</parameter>
     <parameter key="fos_facebook.login_url.next">null</parameter>
 
-    <parameter key="fos_facebook.helper.class">Bundle\FOS\FacebookBundle\Templating\Helper\FacebookHelper</parameter>
-    <parameter key="fos_facebook.twig.extension.class">Bundle\FOS\FacebookBundle\Twig\Extension\FacebookExtension</parameter>
+    <parameter key="fos_facebook.helper.class">FOS\FacebookBundle\Templating\Helper\FacebookHelper</parameter>
+    <parameter key="fos_facebook.twig.extension.class">FOS\FacebookBundle\Twig\Extension\FacebookExtension</parameter>
   </parameters>
 
   <services>

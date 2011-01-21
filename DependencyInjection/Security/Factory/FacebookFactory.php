@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\DependencyInjection\Security\Factory;
+namespace FOS\FacebookBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

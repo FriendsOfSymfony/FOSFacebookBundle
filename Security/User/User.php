@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Security\User;
+namespace FOS\FacebookBundle\Security\User;
 
 use Symfony\Component\Security\User\AccountInterface;
 

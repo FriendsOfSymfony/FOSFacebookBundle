@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\FOS\FacebookBundle\Security\Provider;
+namespace FOS\FacebookBundle\Security\Provider;
 
-use Bundle\FOS\FacebookBundle\Security\User\User;
+use FOS\FacebookBundle\Security\User\User;
 use Symfony\Component\Security\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\User\UserProviderInterface;
 use Symfony\Component\Security\User\AccountInterface;
