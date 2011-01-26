@@ -25,6 +25,7 @@ class FacebookExtension extends \Twig_Extension
     {
         return array(
             'facebook_initialize' => new \Twig_Function_Method($this, 'renderInitialize', array('is_safe' => array('html'))),
+            'facebook_initialize_sync' => new \Twig_Function_Method($this, 'renderInitializeSynchronously', array('is_safe' => array('html'))),
             'facebook_login_button' => new \Twig_Function_Method($this, 'renderLoginButton', array('is_safe' => array('html'))),
         );
     }
@@ -42,6 +43,11 @@ class FacebookExtension extends \Twig_Extension
     public function renderInitialize($parameters = array(), $name = null)
     {
         return $this->helper->initialize($parameters, $name);
+    }
+
+    public function renderInitializeSynchronously($parameters = array(), $name = null)
+    {
+        return $this->helper->initializeSynchronously($parameters, $name);
     }
 
     public function renderLoginButton($parameters = array(), $name = null)

@@ -79,6 +79,15 @@ the opening `body` tag:
           <!-- inside a twig template -->
           {{ facebook_initialize({'xfbml': true}) }}
 
+If you want the SDK not to be loaded asynchronously use the following function
+instead:
+
+      <body>
+          <!-- inside a php template -->
+          <?php echo $view['facebook']->initializeSynchronously(array('xfbml' => true)) ?>
+          <!-- inside a twig template -->
+          {{ facebook_initialize_sync({'xfbml': true}) }}
+
 If you will be adding XFBML markup to your site you may also declare the
 namespace, perhaps in the opening `html` tag:
 

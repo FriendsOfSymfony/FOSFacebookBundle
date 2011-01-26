@@ -57,6 +57,30 @@ class FacebookHelper extends Helper
         ));
     }
 
+    /**
+     * Returns the HTML necessary for initializing the JavaScript SDK. It does
+     * a synchronous request to Facebook to get the needed HTML.
+     *
+     * The default template includes the following parameters:
+     *
+     *  * appId
+     *  * xfbml
+     *  * session
+     *  * status
+     *  * cookie
+     *  * logging
+     *  * culture
+     *
+     * @param array  $parameters An array of parameters for the initialization template
+     * @param string $name       A template name
+     *
+     * @return string An HTML string
+     */
+    public function initializeSynchronously($params = array(), $name = null)
+    {
+        return $this->initialize($params, 'FOSFacebookBundle::initializeSync.php.html');
+    }
+
     public function loginButton($parameters = array(), $name = null)
     {
         $name = $name ?: 'FOSFacebookBundle::loginButton.php.html';
