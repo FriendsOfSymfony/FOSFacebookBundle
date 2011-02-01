@@ -8,7 +8,7 @@ Installation
 
   2. Add the FOS namespace to your autoloader:
 
-          // src/autoload.php
+          // app/autoload.php
           $loader->registerNamespaces(array(
                 'FOS' => __DIR__,
                 // your other namespaces
