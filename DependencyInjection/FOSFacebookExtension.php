@@ -15,7 +15,7 @@ class FOSFacebookExtension extends Extension
         'security' => 'security.xml',
     );
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function configLoad(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
         $configuration = new Configuration();
@@ -57,10 +57,23 @@ class FOSFacebookExtension extends Extension
      */
     protected function loadDefaults($container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
 
         foreach ($this->resources as $resource) {
             $loader->load($resource);
         }
     }
+
+    /**
+     * Returns the recommended alias to use in XML.
+     *
+     * This alias is also the mandatory prefix to use when using YAML.
+     *
+     * @return string The alias
+     */
+    public function getAlias()
+    {
+        return 'fos_facebook';
+    }
+
 }
