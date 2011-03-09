@@ -15,7 +15,6 @@ class FacebookFactory extends AbstractFactory
         $this->addOption('canvas', 0);
         $this->addOption('display', 'page');
         $this->addOption('fbconnect', 1);
-        $this->addOption('permissions', array());
     }
 
     public function getPosition()

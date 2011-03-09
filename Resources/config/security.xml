@@ -18,6 +18,7 @@
         <service id="fos_facebook.security.authentication.entry_point" class="FOS\FacebookBundle\Security\EntryPoint\FacebookAuthenticationEntryPoint" public="false" abstract="true">
             <argument type="service" id="fos_facebook.api" />
             <argument type="collection" />
+            <argument>%fos_facebook.permissions%</argument>
         </service>
 
     </services>
