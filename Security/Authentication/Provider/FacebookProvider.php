@@ -60,7 +60,7 @@ class FacebookProvider implements AuthenticationProviderInterface
     protected function createAuthenticatedToken($uid)
     {
         if (null === $this->userProvider) {
-            return new FacebookUserToken($uid);
+            throw new AuthenticationException('No Facebook user provider available.');
         }
 
         $user = $this->userProvider->loadUserByUsername($uid);
