@@ -5,6 +5,8 @@ namespace FOS\FacebookBundle\Templating\Helper;
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Templating\EngineInterface;
 
+use \Facebook;
+
 class FacebookHelper extends Helper
 {
     protected $templating;
@@ -13,8 +15,9 @@ class FacebookHelper extends Helper
     protected $logging;
     protected $culture;
     protected $permissions;
+    protected $facebook;
 
-    public function __construct(EngineInterface $templating, $appId, $cookie = false, $logging = true, $culture = 'en_US', array $permissions = array())
+    public function __construct(EngineInterface $templating, Facebook $facebook, $appId, $cookie = false, $logging = true, $culture = 'en_US', array $permissions = array())
     {
         $this->templating  = $templating;
         $this->appId       = $appId;
@@ -22,6 +25,7 @@ class FacebookHelper extends Helper
         $this->logging     = $logging;
         $this->culture     = $culture;
         $this->permissions = $permissions;
+        $this->facebook    = $facebook;
     }
 
     /**
@@ -44,13 +48,15 @@ class FacebookHelper extends Helper
      */
     public function initialize($parameters = array(), $name = null)
     {
+        $session = $this->facebook->getSession();
+
         $name = $name ?: 'FOSFacebookBundle::initialize.html.php';
         return $this->templating->render($name, $parameters + array(
             'async'       => true,
             'fbAsyncInit' => '',
             'appId'       => (string) $this->appId,
             'xfbml'       => false,
-            'session'     => null,
+            'session'     => ($session) ? $session : null,
             'status'      => false,
             'cookie'      => $this->cookie,
             'logging'     => $this->logging,
