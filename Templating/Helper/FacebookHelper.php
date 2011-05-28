@@ -10,18 +10,14 @@ use \Facebook;
 class FacebookHelper extends Helper
 {
     protected $templating;
-    protected $appId;
-    protected $cookie;
     protected $logging;
     protected $culture;
     protected $permissions;
     protected $facebook;
 
-    public function __construct(EngineInterface $templating, Facebook $facebook, $appId, $cookie = false, $logging = true, $culture = 'en_US', array $permissions = array())
+    public function __construct(EngineInterface $templating, Facebook $facebook, $logging = true, $culture = 'en_US', array $permissions = array())
     {
         $this->templating  = $templating;
-        $this->appId       = $appId;
-        $this->cookie      = $cookie;
         $this->logging     = $logging;
         $this->culture     = $culture;
         $this->permissions = $permissions;
@@ -54,11 +50,11 @@ class FacebookHelper extends Helper
         return $this->templating->render($name, $parameters + array(
             'async'       => true,
             'fbAsyncInit' => '',
-            'appId'       => (string) $this->appId,
+            'appId'       => (string) $this->facebook->getAppId(),
             'xfbml'       => false,
             'session'     => ($session) ? $session : null,
             'status'      => false,
-            'cookie'      => $this->cookie,
+            'cookie'      => $this->facebook->useCookieSupport(),
             'logging'     => $this->logging,
             'culture'     => $this->culture,
         ));

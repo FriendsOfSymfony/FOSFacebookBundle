@@ -19,8 +19,6 @@
         <service id="fos_facebook.helper" class="%fos_facebook.helper.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="fos_facebook.api" />
-            <argument>%fos_facebook.app_id%</argument>
-            <argument>%fos_facebook.cookie%</argument>
             <argument>%fos_facebook.logging%</argument>
             <argument>%fos_facebook.culture%</argument>
             <argument>%fos_facebook.permissions%</argument>
