@@ -11,14 +11,14 @@
 
 namespace FOS\FacebookBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 
 /**
  * Command.
  *
  * @author Marcin Sikoń <marcin.sikon@gmail.com>
  */
-abstract class Command extends ContainerAwareCommand
+abstract class Command extends BaseCommand
 {
     /**
      * get facebook sdk
