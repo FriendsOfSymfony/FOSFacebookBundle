@@ -35,7 +35,7 @@ Installation
 
   1. Add this bundle to your and the Facebook PHP SDK to your vendor/ dir:
 
-          $ git submodule add git://github.com/FriendsOfSymfony/FacebookBundle.git vendor/bundles/FOS/FacebookBundle
+          $ git submodule add git://github.com/FriendsOfSymfony/FOSFacebookBundle.git vendor/bundles/FOS/FacebookBundle
           $ git submodule add git://github.com/facebook/php-sdk.git vendor/facebook
 
   2. Add the FOS namespace to your autoloader:
