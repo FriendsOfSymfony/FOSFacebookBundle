@@ -246,7 +246,7 @@ to the provider id in the "provider" section in the config.yml:
     use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
     use Symfony\Component\Security\Core\User\UserProviderInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
-    use \Facebook;
+    use FOS\FacebookBundle\Facebook\FacebookSessionPersistence;
     use \FacebookApiException;
 
     class FacebookProvider implements UserProviderInterface
@@ -258,7 +258,7 @@ to the provider id in the "provider" section in the config.yml:
         protected $userManager;
         protected $validator;
 
-        public function __construct(Facebook $facebook, $userManager, $validator)
+        public function __construct(FacebookSessionPersistence $facebook, $userManager, $validator)
         {
             $this->facebook = $facebook;
             $this->userManager = $userManager;
