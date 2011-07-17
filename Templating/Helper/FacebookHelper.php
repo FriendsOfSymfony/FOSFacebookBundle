@@ -51,17 +51,15 @@ class FacebookHelper extends Helper
      */
     public function initialize($parameters = array(), $name = null)
     {
-        $session = $this->facebook->getSession();
-
         $name = $name ?: 'FOSFacebookBundle::initialize.html.php';
         return $this->templating->render($name, $parameters + array(
             'async'       => true,
             'fbAsyncInit' => '',
             'appId'       => (string) $this->facebook->getAppId(),
             'xfbml'       => false,
-            'session'     => ($session) ? $session : null,
+            'session'     => true,
             'status'      => false,
-            'cookie'      => $this->facebook->useCookieSupport(),
+            'cookie'      => true,
             'logging'     => $this->logging,
             'culture'     => $this->culture,
         ));
