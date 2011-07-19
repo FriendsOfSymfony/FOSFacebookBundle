@@ -69,7 +69,7 @@ class FacebookSessionPersistence extends \BaseFacebook
      */
     protected function clearAllPersistentData()
     {
-        foreach ($this->session->all() as $k => $v) {
+        foreach ($this->session->getAttributes() as $k => $v) {
             if (0 !== strpos($k, $this->prefix)) {
                 continue;
             }
