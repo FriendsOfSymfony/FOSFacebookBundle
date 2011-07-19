@@ -8,6 +8,12 @@
 window.fbAsyncInit = function() {
 {% endif %}
   FB.init({{ {'appId':appId, 'xfbml':xfbml, 'session':session, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
+  FB.Event.subscribe('auth.login', function(response) {
+    window.location = '{{ login_url }}';
+  });
+  FB.Event.subscribe('auth.logout', function(response) {
+    window.location = '{{ logout_url }}';
+  });
 {% if async %}
   {{ fbAsyncInit }}
 };

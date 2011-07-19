@@ -52,6 +52,17 @@ class FacebookHelper extends Helper
     public function initialize($parameters = array(), $name = null)
     {
         $name = $name ?: 'FOSFacebookBundle::initialize.html.php';
+        $loginParams = array();
+        if(isset($parameters["login_url"])){
+            $loginParams["redirect_uri"] = $parameters["login_url"];
+            unset($parameters["login_url"]);
+        }
+        $logoutParams = array();
+        if(isset($parameters["logout_url"])){
+            $logoutParams["next"] = $parameters["logout_url"];
+            unset($parameters["logout_url"]);
+        }
+
         return $this->templating->render($name, $parameters + array(
             'async'       => true,
             'fbAsyncInit' => '',
@@ -62,6 +73,8 @@ class FacebookHelper extends Helper
             'cookie'      => true,
             'logging'     => $this->logging,
             'culture'     => $this->culture,
+            'login_url'   => $this->facebook->getLoginUrl($loginParams),
+            'logout_url'   => $this->facebook->getLogoutUrl($logoutParams),
         ));
     }
 

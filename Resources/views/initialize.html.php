@@ -13,6 +13,12 @@ window.fbAsyncInit = function() {
     'status'  => $status,
     'cookie'  => $cookie,
     'logging' => $logging)) ?>);
+  FB.Event.subscribe('auth.login', function(response) {
+    window.location = <?php echo json_encode($login_url) ?>;
+  });
+  FB.Event.subscribe('auth.logout', function(response) {
+    window.location = <?php echo json_encode($logout_url) ?>;
+  });
 <?php if (!empty($async)) { ?>
     <?php echo $fbAsyncInit ?>
   };
