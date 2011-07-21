@@ -7,15 +7,15 @@
 {% if async %}
 window.fbAsyncInit = function() {
 {% endif %}
-  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'session':session, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
+  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'session':session, 'status':status, 'cookie':cookie, 'logging':logging, 'oauth': true }|json_encode }});
 {% if async %}
   {{ fbAsyncInit }}
 };
 
 (function() {
-  var e = document.createElement('script');
-  e.src = document.location.protocol + {{ "//connect.facebook.net/%s/all.js"|format(culture)|json_encode }};
-  e.async = true;
+  var e = document.createElement('script'); e.async = true;
+  e.src = document.location.protocol
+    + {{ "//connect.facebook.net/%s/all.js"|format(culture)|json_encode }};
   document.getElementById('fb-root').appendChild(e);
 }());
 {% endif %}
