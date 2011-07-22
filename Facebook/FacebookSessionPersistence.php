@@ -48,6 +48,7 @@ class FacebookSessionPersistence extends \BaseFacebook
      */
     protected function getPersistentData($key, $default = false)
     {
+        $this->session->start();
         return $this->session->get($this->prefix.$key, $default);
     }
 
