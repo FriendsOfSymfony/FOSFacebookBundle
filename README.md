@@ -33,10 +33,27 @@ http://symfony.com/doc/2.0/book/security/authentication.html
 Installation
 ============
 
-  1. Add this bundle to your and the Facebook PHP SDK to your vendor/ dir:
+  1. Add this bundle to your and the Facebook PHP SDK to your ``vendor/`` dir:
+      * Using the vendors script.
 
-          $ git submodule add git://github.com/FriendsOfSymfony/FOSFacebookBundle.git vendor/bundles/FOS/FacebookBundle
-          $ git submodule add git://github.com/facebook/php-sdk.git vendor/facebook
+        Add the following lines in your ``deps`` file::
+
+            [FOSFacebookBundle]
+                git=git://github.com/FriendsOfSymfony/FOSFacebookBundle.git
+                target=/bundles/FOS/FacebookBundle
+            
+            [FacebookSDK]
+                git=git://github.com/facebook/php-sdk.git
+                target=/facebook
+
+        Run the vendors script:
+
+            ./bin/vendors install
+
+      * Using git submodules.
+
+            $ git submodule add git://github.com/FriendsOfSymfony/FOSFacebookBundle.git vendor/bundles/FOS/FacebookBundle
+            $ git submodule add git://github.com/facebook/php-sdk.git vendor/facebook
 
   2. Add the FOS namespace to your autoloader:
 
@@ -74,7 +91,7 @@ Installation
 
           # application/config/config.yml
           fos_facebook:
-              file:   %kernel.root_dir%/../vendor/facebook/src/facebook.php
+              file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
               alias:  facebook
               app_id: 123456879
               secret: s3cr3t
@@ -83,7 +100,7 @@ Installation
 
           # application/config/config.xml
           <fos_facebook:api
-              file="%kernel.root_dir%/../vendor/facebook/src/facebook.php"
+              file="%kernel.root_dir%/../vendor/facebook/src/base_facebook.php"
               alias="facebook"
               app_id="123456879"
               secret="s3cr3t"
@@ -95,7 +112,7 @@ Installation
           </fos_facebook:api>
 
      If you do not include a `file` value in the config you will have to
-     configure your application to autoload the `Facebook` class.
+     configure your application to autoload the `BaseFacebook` class.
 
   6. Add this configuration if you want to use the `security component`:
 
@@ -160,7 +177,7 @@ Installation
                   - { path: ^/.*,                  role: [IS_AUTHENTICATED_ANONYMOUSLY] }
        
     The role `ROLE_FACEBOOK` has to be added in your User class (see Acme\MyBundle\Entity\User::setFBData() below).
-    > Note that the order of access controle rules matters!
+    > Note that the order of access control rules matters!
 
 Setting up the JavaScript SDK
 -----------------------------
@@ -228,7 +245,7 @@ to the provider id in the "provider" section in the config.yml:
     use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
     use Symfony\Component\Security\Core\User\UserProviderInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
-    use \Facebook;
+    use \BaseFacebook;
     use \FacebookApiException;
 
     class FacebookProvider implements UserProviderInterface
@@ -240,7 +257,7 @@ to the provider id in the "provider" section in the config.yml:
         protected $userManager;
         protected $validator;
 
-        public function __construct(Facebook $facebook, $userManager, $validator)
+        public function __construct(BaseFacebook $facebook, $userManager, $validator)
         {
             $this->facebook = $facebook;
             $this->userManager = $userManager;

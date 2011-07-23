@@ -48,7 +48,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('class')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('api')->defaultValue('Facebook')->end()
+                        ->scalarNode('api')->defaultValue('FOS\FacebookBundle\Facebook\FacebookSessionPersistence')->end()
                         ->scalarNode('helper')->defaultValue('FOS\FacebookBundle\Templating\Helper\FacebookHelper')->end()
                         ->scalarNode('twig')->defaultValue('FOS\FacebookBundle\Twig\Extension\FacebookExtension')->end()
                     ->end()
@@ -58,5 +58,4 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
-
 }

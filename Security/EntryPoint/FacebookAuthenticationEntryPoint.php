@@ -31,10 +31,10 @@ class FacebookAuthenticationEntryPoint implements AuthenticationEntryPointInterf
     /**
      * Constructor
      *
-     * @param Facebook $facebook
+     * @param BaseFacebook $facebook
      * @param array    $options
      */
-    public function __construct(\Facebook $facebook, array $options = array(), array $permissions = array())
+    public function __construct(\BaseFacebook $facebook, array $options = array(), array $permissions = array())
     {
         $this->facebook = $facebook;
         $this->permissions = $permissions;

@@ -14,6 +14,7 @@
                 <argument key="cookie">%fos_facebook.cookie%</argument>
                 <argument key="domain">%fos_facebook.domain%</argument>
             </argument>
+           	<argument type="service" id="session" />
         </service>
 
         <service id="fos_facebook.helper" class="%fos_facebook.helper.class%">
