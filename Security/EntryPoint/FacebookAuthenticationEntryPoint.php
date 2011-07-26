@@ -53,7 +53,7 @@ class FacebookAuthenticationEntryPoint implements AuthenticationEntryPointInterf
                 'display' => $this->options->get('display', 'page'),
                 'fbconnect' => $this->options->get('fbconnect', 1),
                 'req_perms' => implode(',', $this->permissions),
-                'next' => $request->getUriForPath($this->options->get('check_path', '')),
+                'redirect_uri' => $request->getUriForPath($this->options->get('check_path', '')),
             ))
         );
 
