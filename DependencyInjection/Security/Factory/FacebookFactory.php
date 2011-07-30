@@ -20,10 +20,7 @@ class FacebookFactory extends AbstractFactory
 {
     public function __construct()
     {
-        $this->addOption('cancel_url', '');
-        $this->addOption('canvas', 0);
         $this->addOption('display', 'page');
-        $this->addOption('fbconnect', 1);
     }
 
     public function getPosition()
