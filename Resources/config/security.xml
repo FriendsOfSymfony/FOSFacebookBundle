@@ -21,5 +21,9 @@
             <argument>%fos_facebook.permissions%</argument>
         </service>
 
+        <service id="fos_facebook.logout.handler" class="FOS\FacebookBundle\Security\Logout\FacebookLogoutHandler" public="false">
+            <argument type="service" id="fos_facebook.api" />
+        </service>
+
     </services>
 </container>
