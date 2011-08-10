@@ -1,8 +1,8 @@
 <div id="fb-root"></div>
 <?php if (empty($async)) { ?>
-<script src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
 <?php } ?>
-<script>
+<script type="text/javascript">
 <?php if (!empty($async)) { ?>
 window.fbAsyncInit = function() {
 <?php }?>
