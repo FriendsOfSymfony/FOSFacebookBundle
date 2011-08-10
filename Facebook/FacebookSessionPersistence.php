@@ -15,11 +15,17 @@ class FacebookSessionPersistence extends \BaseFacebook
 
     private $session;
     private $prefix;
+    protected static $kSupportedKeys = array('state', 'code', 'access_token', 'user_id');
 
+   /**
+    * @param array $config the application configuration.
+    * @see BaseFacebook::__construct in facebook.php
+    */
     public function __construct($config, Session $session, $prefix = self::PREFIX)
     {
         $this->session = $session;
         $this->prefix  = $prefix;
+        $this->session->start();
 
         parent::__construct($config);
     }
@@ -35,7 +41,12 @@ class FacebookSessionPersistence extends \BaseFacebook
      */
     protected function setPersistentData($key, $value)
     {
-        $this->session->set($this->prefix.$key, $value);
+        if (!in_array($key, self::$kSupportedKeys)) {
+            self::errorLog('Unsupported key passed to setPersistentData.');
+            return;
+        }
+	    
+        $this->session->set($this->constructSessionVariableName($key), $value);
     }
 
     /**
@@ -48,7 +59,18 @@ class FacebookSessionPersistence extends \BaseFacebook
      */
     protected function getPersistentData($key, $default = false)
     {
-        return $this->session->get($this->prefix.$key, $default);
+        if (!in_array($key, self::$kSupportedKeys)) {
+            self::errorLog('Unsupported key passed to getPersistentData.');
+            return $default;
+        }
+        
+        $sessionVariableName = $this->constructSessionVariableName($key);
+        if ($this->session->has($sessionVariableName)) {
+            return $this->session->get($sessionVariableName);
+        }
+	    
+        return $default;
+	    
     }
 
     /**
@@ -59,7 +81,12 @@ class FacebookSessionPersistence extends \BaseFacebook
      */
     protected function clearPersistentData($key)
     {
-        $this->session->remove($this->prefix.$key);
+        if (!in_array($key, self::$kSupportedKeys)) {
+            self::errorLog('Unsupported key passed to clearPersistentData.');
+            return;
+        }
+	
+        $this->session->remove($this->constructSessionVariableName($key));
     }
 
     /**
@@ -76,5 +103,14 @@ class FacebookSessionPersistence extends \BaseFacebook
 
             $this->session->remove($k);
         }
+    }
+
+    protected function constructSessionVariableName($key) 
+    {
+        return $this->prefix.implode('_', array(
+            'fb',
+            $this->getAppId(),
+            $key,
+        ));
     }
 }

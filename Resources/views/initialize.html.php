@@ -9,8 +9,8 @@ window.fbAsyncInit = function() {
   FB.init(<?php echo json_encode(array(
     'appId'   => $appId,
     'xfbml'   => $xfbml,
-    'session' => $session,
-    'status'  => $status,
+    'status' =>  $status,
+    'oauth'   => $oauth,
     'cookie'  => $cookie,
     'logging' => $logging)) ?>);
 <?php if (!empty($async)) { ?>
