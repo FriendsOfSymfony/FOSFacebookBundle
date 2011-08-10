@@ -10,7 +10,7 @@ window.fbAsyncInit = function() {
     'appId'   => $appId,
     'xfbml'   => $xfbml,
     'session' => $session,
-    'status'  => $status,
+    'oauth'   => $oauth,
     'cookie'  => $cookie,
     'logging' => $logging)) ?>);
 <?php if (!empty($async)) { ?>

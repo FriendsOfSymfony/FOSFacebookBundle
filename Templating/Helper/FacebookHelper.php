@@ -57,7 +57,7 @@ class FacebookHelper extends Helper
             'fbAsyncInit' => '',
             'appId'       => (string) $this->facebook->getAppId(),
             'xfbml'       => false,
-            'session'     => true,
+            'oauth'       => true,
             'status'      => false,
             'cookie'      => true,
             'logging'     => $this->logging,
