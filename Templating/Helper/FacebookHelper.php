@@ -19,15 +19,15 @@ class FacebookHelper extends Helper
     protected $templating;
     protected $logging;
     protected $culture;
-    protected $permissions;
+    protected $scope;
     protected $facebook;
 
-    public function __construct(EngineInterface $templating, \BaseFacebook $facebook, $logging = true, $culture = 'en_US', array $permissions = array())
+    public function __construct(EngineInterface $templating, \BaseFacebook $facebook, $logging = true, $culture = 'en_US', array $scope = array())
     {
         $this->templating  = $templating;
         $this->logging     = $logging;
         $this->culture     = $culture;
-        $this->permissions = $permissions;
+        $this->scope       = $scope;
         $this->facebook    = $facebook;
     }
 
@@ -38,7 +38,7 @@ class FacebookHelper extends Helper
      *
      *  * appId
      *  * xfbml
-     *  * session
+     *  * oauth
      *  * status
      *  * cookie
      *  * logging
@@ -71,7 +71,7 @@ class FacebookHelper extends Helper
         return $this->templating->render($name, $parameters + array(
             'autologoutlink' => 'false',
             'label'          => '',
-            'permissions'    => implode(',', $this->permissions),
+            'scope'          => implode(',', $this->scope),
         ));
     }
 

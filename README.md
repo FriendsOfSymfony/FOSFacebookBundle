@@ -15,8 +15,9 @@ Note that logging a user requires multiple steps:
 
 For step 1. and 2. there are two options:
 
-  1. Add a Facebook login button, this approach requires JS code to handle step 3.
-  2. Letting the FOSFacebookBundle redirecting to the Facebook login page
+  1. Select "OAuth Migration" in the Facebook application settings.
+  2. Add a Facebook login button, this approach requires JS code to handle step 3.
+  3. Letting the FOSFacebookBundle redirecting to the Facebook login page
 
 Note that the later happens automatically if the first provider in your first
 firewall configuration is configured to FOSFacebookBundle and the user accesses
