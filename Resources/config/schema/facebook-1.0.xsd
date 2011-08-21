@@ -23,7 +23,7 @@
 
     <xsd:complexType name="permissions">
         <xsd:sequence>
-            <xsd:element name="pemrmission" type="xsd:string" />
+            <xsd:element name="permission" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>
