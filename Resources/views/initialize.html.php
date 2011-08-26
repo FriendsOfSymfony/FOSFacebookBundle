@@ -1,16 +1,16 @@
 <div id="fb-root"></div>
 <?php if (empty($async)) { ?>
-<script src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
 <?php } ?>
-<script>
+<script type="text/javascript">
 <?php if (!empty($async)) { ?>
 window.fbAsyncInit = function() {
 <?php }?>
   FB.init(<?php echo json_encode(array(
     'appId'   => $appId,
     'xfbml'   => $xfbml,
-    'session' => $session,
-    'status'  => $status,
+    'status' =>  $status,
+    'oauth'   => $oauth,
     'cookie'  => $cookie,
     'logging' => $logging)) ?>);
 <?php if (!empty($async)) { ?>

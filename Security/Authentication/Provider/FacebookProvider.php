@@ -48,6 +48,7 @@ class FacebookProvider implements AuthenticationProviderInterface
 
         try {
             if ($uid = $this->facebook->getUser()) {
+                $token->setUser($uid);
                 return $this->createAuthenticatedToken($uid);
             }
         } catch (AuthenticationException $failed) {

@@ -1,13 +1,13 @@
 <div id="fb-root"></div>
 {% if not async %}
-<script src="http://connect.facebook.net/{{ culture }}/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/{{ culture }}/all.js"></script>
 {% endif %}
-<script>
+<script type="text/javascript">
 {% autoescape false %}
 {% if async %}
 window.fbAsyncInit = function() {
 {% endif %}
-  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'session':session, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
+  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'oauth':oauth, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
 {% if async %}
   {{ fbAsyncInit }}
 };

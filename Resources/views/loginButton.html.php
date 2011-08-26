@@ -1,1 +1,1 @@
-<fb:login-button perms="<?php echo $permissions; ?>" autologoutlink="<?php echo $autologoutlink; ?>"><?php echo $label; ?></fb:login-button>
+<fb:login-button scope="<?php echo $scope; ?>" autologoutlink="<?php echo $autologoutlink; ?>"><?php echo $label; ?></fb:login-button>

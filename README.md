@@ -15,8 +15,9 @@ Note that logging a user requires multiple steps:
 
 For step 1. and 2. there are two options:
 
-  1. Add a Facebook login button, this approach requires JS code to handle step 3.
-  2. Letting the FOSFacebookBundle redirecting to the Facebook login page
+  1. Select "OAuth Migration" in the Facebook application settings.
+  2. Add a Facebook login button, this approach requires JS code to handle step 3.
+  3. Letting the FOSFacebookBundle redirecting to the Facebook login page
 
 Note that the later happens automatically if the first provider in your first
 firewall configuration is configured to FOSFacebookBundle and the user accesses
@@ -129,7 +130,9 @@ Installation
                   public:
                       # since anonymous is allowed users will not be forced to login
                       pattern:   ^/.*
-                      fos_facebook:  true
+                      fos_facebook:
+                          app_url: "http://apps.facebook.com/appName/"
+                          server_url: "http://localhost/facebookApp/"
                       anonymous: true
                       logout: true
 
@@ -159,11 +162,21 @@ Installation
                   public:
                       pattern:   ^/.*
                       fos_facebook:
+                          app_url: "http://apps.facebook.com/appName/"
+                          server_url: "http://localhost/facebookApp/"
                           login_path: ^/login
                           check_path: ^/login_check$
                           default_target_path: /
                           provider: my_fos_facebook_provider
                       anonymous: true
+          
+          # application/config/config_dev.yml
+          security:
+              firewalls:
+                  public:
+                      fos_facebook:
+                          app_url: "http://apps.facebook.com/appName/"
+                          server_url: "http://localhost/facebookApp/app_dev.php/"     
 
   8. Optionally use access control to secure specific URLs
 
