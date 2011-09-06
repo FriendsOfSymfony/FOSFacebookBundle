@@ -17,14 +17,16 @@ use Symfony\Component\Templating\EngineInterface;
 class FacebookHelper extends Helper
 {
     protected $templating;
+    protected $router;
     protected $logging;
     protected $culture;
     protected $scope;
     protected $facebook;
 
-    public function __construct(EngineInterface $templating, \BaseFacebook $facebook, $logging = true, $culture = 'en_US', array $scope = array())
+    public function __construct(EngineInterface $templating, $router, \BaseFacebook $facebook, $logging = true, $culture = 'en_US', array $scope = array())
     {
         $this->templating  = $templating;
+        $this->router      = $router;
         $this->logging     = $logging;
         $this->culture     = $culture;
         $this->scope       = $scope;
@@ -62,6 +64,7 @@ class FacebookHelper extends Helper
             'cookie'      => true,
             'logging'     => $this->logging,
             'culture'     => $this->culture,
+            'scope'          => implode(',', $this->scope),
         ));
     }
 
@@ -72,6 +75,13 @@ class FacebookHelper extends Helper
             'autologoutlink' => 'false',
             'label'          => '',
             'scope'          => implode(',', $this->scope),
+        ));
+    }
+
+    public function getLogoutUrl()
+    {
+        return $this->facebook->getLogoutUrl(array(
+            'next' => $this->router->generate('_security_logout', array(), true)
         ));
     }
 
