@@ -97,7 +97,7 @@ Installation
               app_id: 123456879
               secret: s3cr3t
               cookie: true
-              permissions: [email, user_birthday, user_location]
+              permissions: ['email']
 
           # application/config/config.xml
           <fos_facebook:api
@@ -226,14 +226,25 @@ be handled. The step of logging in the user into your Symfony2 application
 still needs to be triggered. To do this you will in most cases simply subscribe
 to the "auth.login" event and then redirect to the "check_path":
 
-    <script>
-      FB.Event.subscribe('auth.login', function(response) {
-        window.location = {{ path('_security_check') }};
-      });
+    <script type="text/javascript">
+    //<![CDATA[
+        window.fbAsyncInit = (function(originalFunc) {
+            return function() {
+                if (originalFunc) originalFunc();
+                FB.Event.subscribe('auth.login', function(response) {
+                   window.location.href = "{{ path('_security_check') }}";
+                });
+                FB.Event.subscribe('auth.logout', function(response) {
+                   window.location.href = "{{ path('_security_logout') }}";
+                });
+            };
+        })(window.fbAsyncInit);
+    //]]>
     </script>
 
 The "_security_check" route would need to point to a "/login_check" pattern
-to match the above configuration.
+to match the above configuration. The "_security_logout" route should point to
+your logout URL ("/logout" by default).
 
 Example Customer User Provider using the FOS\UserBundle
 -------------------------------------------------------

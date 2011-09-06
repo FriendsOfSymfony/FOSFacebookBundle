@@ -1,16 +1,14 @@
 <div id="fb-root"></div>
-{% if not async %}
-<script type="text/javascript" src="http://connect.facebook.net/{{ culture }}/all.js"></script>
-{% endif %}
+
 <script type="text/javascript">
 {% autoescape false %}
-{% if async %}
-window.fbAsyncInit = function() {
-{% endif %}
-  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'oauth':oauth, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
-{% if async %}
-  {{ fbAsyncInit }}
-};
+//<![CDATA[
+window.fbAsyncInit = (function(originalFunc) {
+    return function() {
+        if (originalFunc) originalFunc();
+        FB.init({{ {'appId':appId, 'xfbml':xfbml, 'oauth':oauth, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
+    };
+})(window.fbAsyncInit);
 
 (function() {
   var e = document.createElement('script');
@@ -18,6 +16,6 @@ window.fbAsyncInit = function() {
   e.async = true;
   document.getElementById('fb-root').appendChild(e);
 }());
-{% endif %}
+//]]>
 {% endautoescape %}
 </script>
