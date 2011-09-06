@@ -64,6 +64,7 @@ class FacebookHelper extends Helper
             'cookie'      => true,
             'logging'     => $this->logging,
             'culture'     => $this->culture,
+            'scope'          => implode(',', $this->scope),
         ));
     }
 
