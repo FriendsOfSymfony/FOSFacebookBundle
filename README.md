@@ -134,7 +134,8 @@ Installation
                           app_url: "http://apps.facebook.com/appName/"
                           server_url: "http://localhost/facebookApp/"
                       anonymous: true
-                      logout: true
+                      logout:
+                          handlers: ["fos_facebook.logout_handler"]
 
               access_control:
                   - { path: ^/secured/.*, role: [IS_AUTHENTICATED_FULLY] } # This is the route secured with fos_facebook
@@ -169,6 +170,8 @@ Installation
                           default_target_path: /
                           provider: my_fos_facebook_provider
                       anonymous: true
+                      logout:
+                          handlers: ["fos_facebook.logout_handler"]
           
           # application/config/config_dev.yml
           security:
@@ -228,12 +231,22 @@ to the "auth.login" event and then redirect to the "check_path":
 
     <script>
       FB.Event.subscribe('auth.login', function(response) {
-        window.location = {{ path('_security_check') }};
+        window.location = "{{ path('_security_check') }}";
       });
     </script>
 
 The "_security_check" route would need to point to a "/login_check" pattern
 to match the above configuration.
+
+Also, you need to trigger the logout action, so, subscribe the "auth.logout"
+to redirect to the "logout" route:
+
+    <script>
+      FB.Event.subscribe('auth.logout', function(response) {
+        window.location = "{{ path('_security_logout') }}";
+      });
+    </script>
+
 
 Example Customer User Provider using the FOS\UserBundle
 -------------------------------------------------------
