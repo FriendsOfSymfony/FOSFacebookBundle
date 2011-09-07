@@ -3,6 +3,7 @@
 <phpunit bootstrap="./Tests/bootstrap.php" color="true">
   <php>
     <server name="SYMFONY" value="../../../symfony/src" />
+    <server name="TWIG" value="../../../twig/lib/" />
   </php>
 
   <testsuites>

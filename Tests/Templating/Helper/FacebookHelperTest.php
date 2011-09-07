@@ -35,13 +35,46 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
                 'culture' => 'en_US',
                 'fbAsyncInit' => '',
                 'logging' => true,
-                'session' => null,
+                'oauth' => true,
                 'status'  => false,
                 'xfbml'   => false,
             ))
             ->will($this->returnValue($expected));
 
-        $helper = new FacebookHelper($templating, '123');
-        $this->assertSame($expected, $helper->initialize());
+        $facebookMock = $this->getMock('\BaseFacebook', array('getAppId'));
+        $facebookMock->expects($this->once())
+            ->method('getAppId')
+            ->will($this->returnValue('123'));
+
+        $helper = new FacebookHelper($templating, $facebookMock);
+        $this->assertSame($expected, $helper->initialize(array('cookie' => false)));
+    }
+
+    /**
+     * @covers FOS\FacebookBundle\Templating\Helper\FacebookHelper::loginButton
+     */
+    public function testLoginButton()
+    {
+        $expected = new \stdClass();
+
+        $templating = $this->getMockBuilder('Symfony\Component\Templating\DelegatingEngine')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $templating
+            ->expects($this->once())
+            ->method('render')
+            ->with('FOSFacebookBundle::loginButton.html.php', array(
+                'autologoutlink' => 'false',
+                'label'          => 'testLabel',
+                'scope'          => '1,2,3',
+            ))
+            ->will($this->returnValue($expected));
+
+        $facebookMock = $this->getMock('\BaseFacebook', array('getAppId'));
+        $facebookMock->expects($this->any())
+            ->method('getAppId');
+
+        $helper = new FacebookHelper($templating, $facebookMock, true, 'en_US', array(1,2,3) );
+        $this->assertSame($expected, $helper->loginButton(array('label' => 'testLabel')));
     }
 }
