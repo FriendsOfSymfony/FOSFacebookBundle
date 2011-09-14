@@ -20,8 +20,6 @@ class FOSFacebookExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadFailure()
     {
-//        $this->setExpectedException('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException');
-
         $container = $this->getMockBuilder('Symfony\\Component\\DependencyInjection\\ContainerBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -66,6 +64,34 @@ class FOSFacebookExtensionTest extends \PHPUnit_Framework_TestCase
             array('culture' => 'foo'),
             array('permissions' => array('email')),
         );
+        $extension->load($configs, $container);
+    }
+
+    /**
+     * @covers FOS\FacebookBundle\DependencyInjection\FOSFacebookExtension::load
+     */
+    public function testThatCanSetContainerAlias()
+    {
+        $container = $this->getMockBuilder('Symfony\\Component\\DependencyInjection\\ContainerBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('setAlias')
+            ->with($this->equalTo('facebook_alias'), $this->equalTo('fos_facebook.api'));
+
+        $configs = array(
+            array('class' => array('api' => 'foo')),
+            array('file' => 'foo'),
+            array('app_id' => 'foo'),
+            array('secret' => 'foo'),
+            array('cookie' => 'foo'),
+            array('domain' => 'foo'),
+            array('logging' => 'foo'),
+            array('culture' => 'foo'),
+            array('permissions' => array('email')),
+            array('alias' => 'facebook_alias')
+        );
+        $extension = new FOSFacebookExtension();
         $extension->load($configs, $container);
     }
 }
