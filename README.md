@@ -7,7 +7,7 @@ Symfony2 application via Facebook. Furthermore via custom user provider support
 the Facebook login can also be integrated with other data sources like the
 database based solution provided by FOSUserBundle.
 
-Note that logging a user requires multiple steps:
+Note that logging in a user requires multiple steps:
 
   1. the user must be logged into Facebook
   2. the user must connect his Facebook account to your site
