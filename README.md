@@ -205,9 +205,14 @@ the opening `body` tag:
 
       <body>
           <!-- inside a php template -->
-          <?php echo $view['facebook']->initialize(array('xfbml' => true)) ?>
+          <?php echo $view['facebook']->initialize(array('xfbml' => true, 'fbAsyncInit' => 'onFbInit();')) ?>
           <!-- inside a twig template -->
-          {{ facebook_initialize({'xfbml': true}) }}
+          {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+
+Note that `fbAsyncInit` is a parameter helping you to execute JavaScript within 
+the function initializing the connection with Facebook, just after the `FB.init();`
+call. `onFbInit();` is a JavaScript function defined furthermore to execute functions
+which need `FB` initialized.
 
 If you will be adding XFBML markup to your site you may also declare the
 namespace, perhaps in the opening `html` tag:
@@ -230,10 +235,22 @@ still needs to be triggered. To do this you will in most cases simply subscribe
 to the "auth.login" event and then redirect to the "check_path":
 
     <script>
-      FB.Event.subscribe('auth.login', function(response) {
-        window.location = "{{ path('_security_check') }}";
-      });
+      function goLogIn(){
+          window.location = "{{ path('_security_check') }}";
+      }
+    
+      function onFbInit() {
+         if (typeof(FB) != 'undefined' && FB != null ) {
+              FB.Event.subscribe('auth.login', function(response) {
+                   setTimeout(goLogIn,500);
+              });
+         }
+      }
     </script>
+    
+Note that we wait 500ms before redirecting to let the browser dealing with the 
+Facebook cookie. You can avoid this step but you might get this error message:
+*"The Facebook user could not be retrieved from the session."*
 
 The "_security_check" route would need to point to a "/login_check" pattern
 to match the above configuration.
@@ -242,9 +259,20 @@ Also, you need to trigger the logout action, so, subscribe the "auth.logout"
 to redirect to the "logout" route:
 
     <script>
-      FB.Event.subscribe('auth.logout', function(response) {
-        window.location = "{{ path('_security_logout') }}";
-      });
+      function goLogIn(){
+          window.location = "{{ path('_security_check') }}";
+      }
+    
+      function onFbInit() {
+         if (typeof(FB) != 'undefined' && FB != null ) {
+              FB.Event.subscribe('auth.login', function(response) {
+                   setTimeout(goLogIn,500);
+              });
+              FB.Event.subscribe('auth.logout', function(response) {
+                   window.location = "{{ path('_security_logout') }}";
+              });
+         }
+      }
     </script>
 
 
