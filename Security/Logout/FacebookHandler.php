@@ -44,7 +44,7 @@ class FacebookHandler implements LogoutHandlerInterface
     public function logout(Request $request, Response $response, TokenInterface $token)
     {
         $fb_cookie = sprintf(
-            'fbsr_%d',
+            'fbsr_%s',
             $this->facebookApi->getAppId()
         );
         $response->headers->clearCookie($fb_cookie);
