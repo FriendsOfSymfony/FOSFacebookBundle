@@ -400,6 +400,20 @@ The following example also adds "firstname" and "lastname" properties:
          */
         protected $facebookID;
 
+
+        public function serialize()
+        {
+            return serialize(array($this->facebookId, parent::serialize()));
+        }
+
+        public function unserialize($data)
+        {
+            list($this->facebookId, $parentData) = unserialize($data);
+            parent::unserialize($parentData);
+        }
+
+
+
         /**
          * @return string
          */
