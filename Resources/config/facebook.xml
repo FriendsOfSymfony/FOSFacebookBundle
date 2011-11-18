@@ -30,6 +30,10 @@
             <argument type="service" id="service_container" />
             <tag name="twig.extension" />
         </service>
+        
+        <service id="fos_facebook.facebookPush" class="FOS\FacebookBundle\Services\facebookPush">
+            <argument type="service" id="fos_facebook" />
+        </service>
 
     </services>
 </container>
