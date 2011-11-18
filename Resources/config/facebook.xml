@@ -31,8 +31,8 @@
             <tag name="twig.extension" />
         </service>
         
-        <service id="fos_facebook.facebookPush" class="FOS\FacebookBundle\Services\facebookPush">
-            <argument type="service" id="fos_facebook" />
+        <service id="fos_facebook.facebook_push" class="FOS\FacebookBundle\Services\facebookPush">
+            <argument type="service" id="fos_facebook.api" />
         </service>
 
     </services>
