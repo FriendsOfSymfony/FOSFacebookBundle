@@ -152,7 +152,7 @@ Installation
               providers:
                   # choose the provider name freely
                   my_fos_facebook_provider:
-                      id: my.facebook.user   # see "Example Customer User Provider using the FOS\UserBundle" chapter further down
+                      id: my.facebook.user   # see "Example Custom User Provider using the FOS\UserBundle" chapter further down
 
               firewalls:
                   public:
@@ -271,7 +271,7 @@ to redirect to the "logout" route:
     </script>
 
 
-Example Customer User Provider using the FOS\UserBundle
+Example Custom User Provider using the FOS\UserBundle
 -------------------------------------------------------
 
 This requires adding a service for the custom user provider which is then set
@@ -320,7 +320,7 @@ to the provider id in the "provider" section in the config.yml:
 
         public function findUserByFbId($fbId)
         {
-            return $this->userManager->findUserBy(array('facebookID' => $fbId));
+            return $this->userManager->findUserBy(array('facebookId' => $fbId));
         }
 
         public function loadUserByUsername($username)
@@ -369,30 +369,37 @@ to the provider id in the "provider" section in the config.yml:
     }
 
 Finally one also needs to add a getFacebookId() and setFBData() method to the User model.
-The following example also adds "firstname" and "lastname" properties:
+The following example also adds "firstname" and "lastname" properties, using the Doctrine ORM:
 
     <?php
 
     namespace Acme\MyBundle\Entity;
 
     use FOS\UserBundle\Entity\User as BaseUser;
+    use Doctrine\ORM\Mapping as ORM;
 
     class User extends BaseUser
     {
         /**
          * @var string
+         *
+         * @ORM\Column(name="firstname", type="string", length=255)
          */
         protected $firstname;
 
         /**
          * @var string
+         *
+         * @ORM\Column(name="lastname", type="string", length=255)
          */
         protected $lastname;
 
         /**
          * @var string
+         *
+         * @ORM\Column(name="facebookId", type="string", length=255)
          */
-        protected $facebookID;
+        protected $facebookId;
 
 
         public function serialize()
@@ -450,22 +457,22 @@ The following example also adds "firstname" and "lastname" properties:
         }
 
         /**
-         * @param string $facebookID
+         * @param string $facebookId
          * @return void
          */
-        public function setFacebookID($facebookID)
+        public function setFacebookId($facebookId)
         {
-            $this->facebookID = $facebookID;
-            $this->setUsername($facebookID);
+            $this->facebookId = $facebookId;
+            $this->setUsername($facebookId);
             $this->salt = '';
         }
 
         /**
          * @return string
          */
-        public function getFacebookID()
+        public function getFacebookId()
         {
-            return $this->facebookID;
+            return $this->facebookId;
         }
 
         /**
@@ -474,7 +481,7 @@ The following example also adds "firstname" and "lastname" properties:
         public function setFBData($fbdata)
         {
             if (isset($fbdata['id'])) {
-                $this->setFacebookID($fbdata['id']);
+                $this->setFacebookId($fbdata['id']);
                 $this->addRole('ROLE_FACEBOOK');
             }
             if (isset($fbdata['first_name'])) {
