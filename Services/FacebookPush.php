@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the FOSFacebookBundle package.
  *
@@ -6,12 +7,8 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * This class provides a service that abstracts Facebook API functionality such as retrieving user information and
- * posting data to Facebook API.
- *
- * @author Teemu Reisbacka <teemu.reisbacka@gmail.com>
  */
+
 namespace FOS\FacebookBundle\Services;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,6 +18,13 @@ use \FacebookApiException;
 use \InvalidArgumentException;
 use \UnexpectedValueException;
 
+/**
+ *
+ * This class provides a service that abstracts Facebook API functionality such as retrieving user information and
+ * posting data to Facebook API.
+ * @author Teemu Reisbacka <teemu.reisbacka@gmail.com>
+ *
+ */
 class FacebookPush
 {
     protected $facebook;
@@ -30,8 +34,10 @@ class FacebookPush
     {
         $this->facebook = $facebook;
     }
+
     /**
      * Returns error message if an executed function returned a failure (false value).
+     *
      * @return string
      */
     public function getErrorMessage()
@@ -43,6 +49,7 @@ class FacebookPush
     /**
      * Retrieves available user information from Facebook for the logged in user. Available information
      * depends on what access privileges the user has granted to your app.
+     *
      * @return array|null
      */
     public function getUserInfromation()
@@ -55,16 +62,17 @@ class FacebookPush
 
         return $me;
     }
+
     /**
      * Retrieves the profile picture of the logged in user in binary format, so that you can
      * save it locally.
+     *
      * @return string|boolean
      */
     public function getProfilePicture()
     {
         $facebookUID = $this->facebook->getUser();
         if (empty($facebookUID)) {
-
             return null;
         }
 
@@ -72,15 +80,16 @@ class FacebookPush
 
         return $binaryImage;
     }
+
     /**
      * Publishes a message to user's Facebook stream as the user. You application name will be displayed at the bottom
      * of the message.
      * REQUIRES Facebook access permission "publish_stream"
+     *
      * @param Rohea\FacebookBundle\Models\streamPost $streamPost Stream post object
      * @param string $accessToken Optional Facebook Access token, if not given, logged in user is used
      * @return boolean
      */
-
     public function publishStream(BaseMessage $streamPost, $accessToken = null)
     {
         if (empty($accessToken)) {
@@ -92,21 +101,16 @@ class FacebookPush
 
         $streamPost->setAccessToken($accessToken);
         $message = $streamPost->formatData();
-
         try {
             $result = $this->facebook->api( '/me/feed/', 'post', $message );
 
             /*	Confirm that the post went through -> Facebook api return message id
              */
             if (!is_array($result) || empty($result["id"])) {
-                throw new UnexpectedValueException("Did not receive message id back from the api, post failed.");
+                $this->errorMessage = "Did not receive message id back from the api, post failed.";
+                return false;
             }
-        }
-        catch (FacebookApiException $e) {
-            $this->errorMessage = $e->getMessage();
-
-            return false;
-        } catch (UnexpectedValueException $e) {
+        } catch (FacebookApiException $e) {
             $this->errorMessage = $e->getMessage();
 
             return false;
@@ -114,12 +118,14 @@ class FacebookPush
 
         return true;
     }
+
     /**
      * Publishes a message to user's Facebook page as the page.
      * REQUIRES Facebook access permission "manage_pages"
+     *
      * @param Rohea\FacebookBundle\Models\streamPost $streamPost Stream post object
      * @param string $pageID Your page facebook id. You can see this for examnple in your browser uri-bar when browsing the page.
-     * @return boolea
+     * @return boolean
      */
     public function publishPage(BaseMessage $streamPost, $pageID)
     {
@@ -132,13 +138,10 @@ class FacebookPush
             /*	Confirm that the post went through -> Facebook api return message id
              */
             if (!is_array($result) || empty($result["id"])) {
-                throw new UnexpectedValueException("Did not receive message id back from the api, post failed.");
+                $this->errorMessage = "Did not receive message id back from the api, post failed.";
+                return false;
             }
         } catch (FacebookApiException $e) {
-            $this->errorMessage = $e->getMessage();
-
-            return false;
-        } catch (UnexpectedValueException $e) {
             $this->errorMessage = $e->getMessage();
 
             return false;
@@ -146,9 +149,11 @@ class FacebookPush
 
         return true;
     }
+
     /**
      * Attempts to query access token for give Facebook page
      * REQUIRES Facebook access permission "manage_pages"
+     *
      * @param string $pageID Facebook page id
      * @throws \UnexpectedValueException
      * @return string

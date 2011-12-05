@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the FOSFacebookBundle package.
  *
@@ -6,32 +7,38 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * This class functions as a model for messages to be sent by the facebookPush-service to the Facebook api.
- *
- * @author Teemu Reisbacka <teemu.reisbacka@gmail.com>
  */
+
 namespace FOS\FacebookBundle\Model;
 
 use \InvalidArgumentException;
 
+/**
+ *
+ * This class functions as a model for messages to be sent by the facebookPush-service to the Facebook api.
+ * @author Teemu Reisbacka <teemu.reisbacka@gmail.com>
+ *
+ */
 class StreamPost
 {
     protected $accessToken;
     protected $message;
     protected $attachment;
+    protected $linkout;
 
     /**
      * Sets the access token used in message body. This is set automatically inside facebookPush-service.
+     *
      * @param string $accessToken
      */
     public function setAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
     }
+
     /**
-     *
      * Sets the actual text content of the message
+     *
      * @param string $message
      */
     public function setMessage($message)
@@ -41,6 +48,8 @@ class StreamPost
 
     /**
      * Adds an attachment-picture to your Facebook message. If you specify a link, the image will function as a link.
+     * If you set an attachment, you cannot set any additional links with setLink(...).
+     *
      * @param string $name	This is the title of the attachment (top-most descriptive text)
      * @param string $caption	This is the image caption (text under the title)
      * @param string $uriAttachment	Full uri to the image you wish to attach. This location must be visible to Facebook, they will cache the picture.
@@ -63,9 +72,11 @@ class StreamPost
         }
         $this->attachment = $attachment;
     }
+
     /**
-     * Shortcut for adding a link to you Facebook-message without an image.
-     * The setAttachment(...) will override this function.
+     * Shortcut for adding a link to you Facebook-message without an image. If you
+     * specify an attachment with setAttachment(...), that will be used instead of this link.
+     *
      * @param string $name This is the title of the link (top-most descriptive text)
      * @param string $linkOut Full uri to where you wish to link to
      * @param string $caption Optional description of the link
@@ -80,8 +91,10 @@ class StreamPost
             $this->linkout['caption'] = $caption;
         }
      }
+
     /**
      * Formats this object into on array that can be fed to the php-api class. This function will be called automatically.
+     *
      * @throws \InvalidArgumentException;
      * @return array
      */
