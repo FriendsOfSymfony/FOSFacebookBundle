@@ -334,7 +334,6 @@ to the provider id in the "provider" section in the config.yml:
                     $user = $this->userManager->createUser();
                     $user->setEnabled(true);
                     $user->setPassword('');
-                    $user->setAlgorithm('');
                 }
 
                 // TODO use http://developers.facebook.com/docs/api/realtime
