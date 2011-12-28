@@ -108,6 +108,6 @@ class FacebookProvider implements AuthenticationProviderInterface
             throw new \RuntimeException('User provider did not return an implementation of user interface.');
         }
 
-        return new FacebookUserToken($user, $user->getRoles());
+        return new FacebookUserToken($user->getFacebookId(), $user->getRoles());
     }
 }
