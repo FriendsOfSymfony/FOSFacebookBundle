@@ -252,7 +252,7 @@ check for `response.session` to redirect to the "logout" route:
 
     <script>
       function goLogIn(){
-          window.location = "{{ path('_security_check') }}";
+          window.location.href = "{{ path('_security_check') }}";
       }
     
       function onFbInit() {
@@ -261,7 +261,7 @@ check for `response.session` to redirect to the "logout" route:
                   if (response.session || response.authResponse) {
                       setTimeout(goLogIn, 500);
                   } else {
-                      window.location = "{{ path('_security_logout') }}";
+                      window.location.href = "{{ path('_security_logout') }}";
                   }
               });
           }
