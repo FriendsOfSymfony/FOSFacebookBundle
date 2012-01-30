@@ -27,7 +27,7 @@ class FacebookAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('http://localhost/index'));
 
         $options = array('check_path' => '/index');
-        $facebookMock = $this->getMock('\BaseFacebook', array('getLoginUrl'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getLoginUrl')
             ->with($this->equalTo(array(
@@ -52,7 +52,7 @@ class FacebookAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
         $requestMock = $this->getMock('Symfony\Component\HttpFoundation\Request', array('getUriForPath'));
 
         $options = array('check_path' => '/index', 'server_url' => 'http://server.url', 'app_url' => 'http://app.url');
-        $facebookMock = $this->getMock('\BaseFacebook', array('getLoginUrl'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getLoginUrl')
             ->will($this->returnValue('http://localhost/facebook-redirect/index'));
@@ -62,5 +62,19 @@ class FacebookAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response, 'Response is returned');
         $this->assertRegExp('/location\.href="http:\/\/localhost\/facebook-redirect\/index/', $response->getContent(), 'Javascript redirection is in response');
+    }
+
+    private function getFacebook()
+    {
+        return $this->getMockBuilder('\BaseFacebook')
+            ->disableOriginalConstructor()
+            ->setMethods(array(
+                'getLoginUrl',
+                'clearAllPersistentData',
+                'getPersistentData',
+                'clearPersistentData',
+                'setPersistentData'
+            ))
+            ->getMock();
     }
 }

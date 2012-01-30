@@ -23,6 +23,8 @@ $loader->registerPrefixes(array(
 ));
 $loader->register();
 
+include_once $vendorDir . '/facebook/src/base_facebook.php';
+
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'FOS\\FacebookBundle\\')) {
         $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';

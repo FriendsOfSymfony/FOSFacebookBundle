@@ -21,7 +21,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatUserCheckerCannotBeNullWhenUserProviderIsNotNull()
     {
-        $facebookProvider = new FacebookProvider($this->getMock('\BaseFacebook'), $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface'));
+        $facebookProvider = new FacebookProvider($this->getFacebook(), $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface'));
     }
 
     /**
@@ -29,7 +29,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCannotAuthenticateWhenTokenIsNotFacebookUserToken()
     {
-        $facebookProvider = new FacebookProvider($this->getMock('\BaseFacebook'));
+        $facebookProvider = new FacebookProvider($this->getFacebook());
         $this->assertNull($facebookProvider->authenticate($this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')));
     }
 
@@ -39,7 +39,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCanAuthenticateUserWithoutUserProvider()
     {
-        $facebookMock = $this->getMock('\BaseFacebook', array('getUser'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue('123'));
@@ -58,7 +58,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCannotAuthenticateWhenUserProviderThrowsAuthenticationException()
     {
-        $facebookMock = $this->getMock('\BaseFacebook', array('getUser'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue('123'));
@@ -81,7 +81,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCannotAuthenticateWhenUserProviderDoesNotReturnUsetInterface()
     {
-        $facebookMock = $this->getMock('\BaseFacebook', array('getUser'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue('123'));
@@ -104,7 +104,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCannotAuthenticateWhenCannotRetrieveFacebookUserFromSession()
     {
-        $facebookMock = $this->getMock('\BaseFacebook', array('getUser'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue(false));
@@ -131,7 +131,7 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getRoles')
             ->will($this->returnValue(array()));
 
-        $facebookMock = $this->getMock('\BaseFacebook', array('getUser'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue('123'));
@@ -153,5 +153,19 @@ class FacebookProviderTest extends \PHPUnit_Framework_TestCase
 
         $facebookProvider = new FacebookProvider($facebookMock, $userProviderMock, $userCheckerMock);
         $this->assertEquals('l3l0', $facebookProvider->authenticate($tokenMock)->getUsername());
+    }
+
+    private function getFacebook()
+    {
+        return $this->getMockBuilder('\BaseFacebook')
+            ->disableOriginalConstructor()
+            ->setMethods(array(
+                'getUser',
+                'clearAllPersistentData',
+                'getPersistentData',
+                'clearPersistentData',
+                'setPersistentData'
+            ))
+            ->getMock();
     }
 }

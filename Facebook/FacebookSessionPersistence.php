@@ -63,7 +63,7 @@ class FacebookSessionPersistence extends \BaseFacebook
             self::errorLog('Unsupported key passed to getPersistentData.');
             return $default;
         }
-        
+
         $sessionVariableName = $this->constructSessionVariableName($key);
         if ($this->session->has($sessionVariableName)) {
             return $this->session->get($sessionVariableName);
