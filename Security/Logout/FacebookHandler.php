@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 
+use FOS\FacebookBundle\Facebook\FacebookInterface;
+
 /**
  * Listener for the logout action
  *
@@ -25,7 +27,7 @@ class FacebookHandler implements LogoutHandlerInterface
 {
     private $facebook;
 
-    public function __construct(\BaseFacebook $facebook)
+    public function __construct(FacebookInterface $facebook)
     {
         $this->facebook = $facebook;
     }

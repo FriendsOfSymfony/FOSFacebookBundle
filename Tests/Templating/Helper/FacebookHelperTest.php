@@ -80,15 +80,6 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
 
     private function getFacebook()
     {
-        return $this->getMockBuilder('\BaseFacebook')
-            ->disableOriginalConstructor()
-            ->setMethods(array(
-                'getAppId',
-                'clearAllPersistentData',
-                'getPersistentData',
-                'clearPersistentData',
-                'setPersistentData'
-            ))
-            ->getMock();
+        return $this->getMock('FOS\FacebookBundle\Facebook\FacebookInterface');
     }
 }

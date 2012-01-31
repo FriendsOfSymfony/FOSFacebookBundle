@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session;
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
-class FacebookSessionPersistenceProxy
+class FacebookSessionPersistenceProxy implements FacebookInterface
 {
     /**
      * @var Symfony\Component\HttpFoundation\Session

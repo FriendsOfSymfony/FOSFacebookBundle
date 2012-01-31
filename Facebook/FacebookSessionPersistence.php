@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class FacebookSessionPersistence extends \BaseFacebook
+class FacebookSessionPersistence extends \BaseFacebook implements FacebookInterface
 {
     const PREFIX = '_fos_facebook_';
 
