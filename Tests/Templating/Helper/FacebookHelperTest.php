@@ -17,6 +17,7 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers FOS\FacebookBundle\Templating\Helper\FacebookHelper::initialize
+     * @covers FOS\FacebookBundle\Templating\Helper\FacebookHelper::__construct
      */
     public function testInitialize()
     {

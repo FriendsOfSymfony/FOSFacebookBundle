@@ -125,12 +125,17 @@ class FacebookSessionPersistenceProxy implements FacebookInterface
     {
         $args = func_get_args();
 
-        return $this->getSessionPersistence()->api($args);
+        return call_user_func_array(array($this->getSessionPersistence(), 'api'), $args);
     }
 
     public function destroySession()
     {
         return $this->getSessionPersistence()->destroySession();
+    }
+
+    public function setSessionPersistence(FacebookInterface $sessionPersistence)
+    {
+        $this->sessionPersistence = $sessionPersistence;
     }
 
     /**

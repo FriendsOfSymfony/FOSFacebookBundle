@@ -29,8 +29,7 @@ class FacebookSessionPersistenceTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanSetAppId()
     {
-        $session = $this->getSession();
-        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $session);
+        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $this->getSession());
 
         $this->assertEquals('234', $facebook->getAppId());
         $facebook->setAppId('345');
@@ -39,8 +38,7 @@ class FacebookSessionPersistenceTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanSetApiSecret()
     {
-        $session = $this->getSession();
-        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $session);
+        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $this->getSession());
 
         $this->assertEquals('secret', $facebook->getApiSecret());
         $facebook->setApiSecret('secret1');
@@ -49,8 +47,7 @@ class FacebookSessionPersistenceTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanSetAppSecret()
     {
-        $session = $this->getSession();
-        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $session);
+        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $this->getSession());
 
         $facebook->setAppSecret('secret2');
         $this->assertEquals('secret2', $facebook->getAppSecret());
@@ -58,8 +55,7 @@ class FacebookSessionPersistenceTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanSetFileUploadSupport()
     {
-        $session = $this->getSession();
-        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $session);
+        $facebook = new FacebookSessionPersistenceStub(array('appId' => '234', 'secret' => 'secret'), $this->getSession());
 
         $facebook->setFileUploadSupport(true);
         $this->assertEquals(true, $facebook->getFileUploadSupport());
