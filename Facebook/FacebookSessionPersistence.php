@@ -2,7 +2,7 @@
 
 namespace FOS\FacebookBundle\Facebook;
 
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Implements Symfony2 session persistence for Facebook.
