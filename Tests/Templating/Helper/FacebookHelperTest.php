@@ -17,6 +17,7 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers FOS\FacebookBundle\Templating\Helper\FacebookHelper::initialize
+     * @covers FOS\FacebookBundle\Templating\Helper\FacebookHelper::__construct
      */
     public function testInitialize()
     {
@@ -41,7 +42,7 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
             ))
             ->will($this->returnValue($expected));
 
-        $facebookMock = $this->getMock('\BaseFacebook', array('getAppId'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->once())
             ->method('getAppId')
             ->will($this->returnValue('123'));
@@ -70,11 +71,16 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
             ))
             ->will($this->returnValue($expected));
 
-        $facebookMock = $this->getMock('\BaseFacebook', array('getAppId'));
+        $facebookMock = $this->getFacebook();
         $facebookMock->expects($this->any())
             ->method('getAppId');
 
         $helper = new FacebookHelper($templating, $facebookMock, true, 'en_US', array(1,2,3) );
         $this->assertSame($expected, $helper->loginButton(array('label' => 'testLabel')));
+    }
+
+    private function getFacebook()
+    {
+        return $this->getMock('FOS\FacebookBundle\Facebook\FacebookInterface');
     }
 }

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class FacebookSessionPersistence extends \BaseFacebook
+class FacebookSessionPersistence extends \BaseFacebook implements FacebookInterface
 {
     const PREFIX = '_fos_facebook_';
 
@@ -63,7 +63,7 @@ class FacebookSessionPersistence extends \BaseFacebook
             self::errorLog('Unsupported key passed to getPersistentData.');
             return $default;
         }
-        
+
         $sessionVariableName = $this->constructSessionVariableName($key);
         if ($this->session->has($sessionVariableName)) {
             return $this->session->get($sessionVariableName);

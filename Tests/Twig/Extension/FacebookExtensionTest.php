@@ -18,6 +18,7 @@ class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers FOS\FacebookBundle\Twig\Extension\FacebookExtension::getName
+     * @covers FOS\FacebookBundle\Twig\Extension\FacebookExtension::__construct
      */
     public function testGetName()
     {
