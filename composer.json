@@ -6,7 +6,7 @@
                 "name": "facebook/php-sdk",
                 "version": "3.1.1",
                 "source": {
-                    "url": "git://github.com/facebook/php-sdk.git",
+                    "url": "git://github.com/facebook/facebook-php-sdk.git",
                     "type": "git",
                     "reference": "origin/master"
                 }
