@@ -73,7 +73,7 @@ class FacebookHelper extends Helper
         return $this->templating->render($name, $parameters + array(
             'autologoutlink' => 'false',
             'label'          => '',
-            'size' => 'small',
+            'size' => 'medium',
             'scope'          => implode(',', $this->scope),
         ));
     }
