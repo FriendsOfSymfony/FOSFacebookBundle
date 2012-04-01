@@ -75,6 +75,7 @@ class FacebookHelper extends Helper
             'label'          => '',
             'size' => 'medium',
             'scope'          => implode(',', $this->scope),
+            'showfaces' => 'false'
         ));
     }
 
