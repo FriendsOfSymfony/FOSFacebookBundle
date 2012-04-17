@@ -22,6 +22,6 @@ class FacebookListener extends AbstractAuthenticationListener
 {
     protected function attemptAuthentication(Request $request)
     {
-        return $this->authenticationManager->authenticate(new FacebookUserToken());
+        return $this->authenticationManager->authenticate(new FacebookUserToken($this->providerKey));
     }
 }

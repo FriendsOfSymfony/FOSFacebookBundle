@@ -15,7 +15,9 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class FacebookUserToken extends AbstractToken
 {
-    public function __construct($uid = '', array $roles = array())
+    private $providerKey;
+
+    public function __construct($providerKey, $uid = '', array $roles = array())
     {
         parent::__construct($roles);
 
@@ -24,10 +26,28 @@ class FacebookUserToken extends AbstractToken
         if (!empty($uid)) {
             $this->setAuthenticated(true);
         }
+
+        $this->providerKey = $providerKey;
     }
 
     public function getCredentials()
     {
         return '';
+    }
+
+    public function getProviderKey()
+    {
+        return $this->providerKey;
+    }
+
+    public function serialize()
+    {
+        return serialize(array($this->providerKey, parent::serialize()));
+    }
+
+    public function unserialize($str)
+    {
+        list($this->providerKey, $parentStr) = unserialize($str);
+        parent::unserialize($parentStr);
     }
 }

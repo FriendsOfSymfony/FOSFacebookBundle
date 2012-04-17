@@ -30,11 +30,12 @@ class FacebookProvider implements AuthenticationProviderInterface
      * @var \BaseFacebook
      */
     protected $facebook;
+    protected $providerKey;
     protected $userProvider;
     protected $userChecker;
     protected $createIfNotExists;
 
-    public function __construct(\BaseFacebook $facebook, UserProviderInterface $userProvider = null, UserCheckerInterface $userChecker = null, $createIfNotExists = false)
+    public function __construct($providerKey, \BaseFacebook $facebook, UserProviderInterface $userProvider = null, UserCheckerInterface $userChecker = null, $createIfNotExists = false)
     {
         if (null !== $userProvider && null === $userChecker) {
             throw new \InvalidArgumentException('$userChecker cannot be null, if $userProvider is not null.');
@@ -44,6 +45,7 @@ class FacebookProvider implements AuthenticationProviderInterface
             throw new \InvalidArgumentException('The $userProvider must implement UserManagerInterface if $createIfNotExists is true.');
         }
 
+        $this->providerKey = $providerKey;
         $this->facebook = $facebook;
         $this->userProvider = $userProvider;
         $this->userChecker = $userChecker;
@@ -60,7 +62,7 @@ class FacebookProvider implements AuthenticationProviderInterface
         if ($user instanceof UserInterface) {
             $this->userChecker->checkPostAuth($user);
 
-            $newToken = new FacebookUserToken($user, $user->getRoles());
+            $newToken = new FacebookUserToken($this->providerKey, $user, $user->getRoles());
             $newToken->setAttributes($token->getAttributes());
 
             return $newToken;
@@ -84,13 +86,13 @@ class FacebookProvider implements AuthenticationProviderInterface
 
     public function supports(TokenInterface $token)
     {
-        return $token instanceof FacebookUserToken;
+        return $token instanceof FacebookUserToken && $this->providerKey === $token->getProviderKey();
     }
 
     protected function createAuthenticatedToken($uid)
     {
         if (null === $this->userProvider) {
-            return new FacebookUserToken($uid);
+            return new FacebookUserToken($this->providerKey, $uid);
         }
 
         try {
@@ -108,6 +110,6 @@ class FacebookProvider implements AuthenticationProviderInterface
             throw new \RuntimeException('User provider did not return an implementation of user interface.');
         }
 
-        return new FacebookUserToken($user, $user->getRoles());
+        return new FacebookUserToken($this->providerKey, $user, $user->getRoles());
     }
 }

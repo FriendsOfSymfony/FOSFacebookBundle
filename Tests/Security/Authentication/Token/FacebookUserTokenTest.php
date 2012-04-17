@@ -20,7 +20,7 @@ class FacebookUserTokenTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatAlwaysReturnEmptyCredentials($uid, $roles)
     {
-        $token = new FacebookUserToken($uid, $roles);
+        $token = new FacebookUserToken('main', $uid, $roles);
 
         $this->assertEquals('', $token->getCredentials());
     }
@@ -36,5 +36,13 @@ class FacebookUserTokenTest extends \PHPUnit_Framework_TestCase
             array('', array('role1', 'role2')),
             array('l3l0', array('role1', 'role2'))
         );
+    }
+
+    public function testThatProviderKeyIsNotEmptyAfterDeserialization()
+    {
+        $providerKey = 'main';
+        $token = unserialize(serialize(new FacebookUserToken($providerKey)));
+
+        $this->assertEquals($providerKey, $token->getProviderKey());
     }
 }

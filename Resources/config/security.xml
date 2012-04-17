@@ -6,9 +6,10 @@
 
     <services>
         <service id="fos_facebook.auth" class="FOS\FacebookBundle\Security\Authentication\Provider\FacebookProvider" public="false">
+            <argument /> <!-- Provider-shared Key -->
             <argument type="service" id="fos_facebook.api" />
         </service>
-        
+
         <service id="fos_facebook.logout_handler" class="FOS\FacebookBundle\Security\Logout\FacebookHandler" public="false">
             <argument type="service" id="fos_facebook.api" />
         </service>

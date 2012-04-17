@@ -43,22 +43,22 @@ class FacebookFactory extends AbstractFactory
 
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
+        $authProviderId = 'fos_facebook.auth.'.$id;
+
+        $definition = $container
+            ->setDefinition($authProviderId, new DefinitionDecorator('fos_facebook.auth'))
+            ->replaceArgument(0, $id);
+
         // with user provider
         if (isset($config['provider'])) {
-            $authProviderId = 'fos_facebook.auth.'.$id;
-
-            $container
-                ->setDefinition($authProviderId, new DefinitionDecorator('fos_facebook.auth'))
+            $definition
                 ->addArgument(new Reference($userProviderId))
                 ->addArgument(new Reference('security.user_checker'))
                 ->addArgument($config['create_user_if_not_exists'])
             ;
-
-            return $authProviderId;
         }
 
-        // without user provider
-        return 'fos_facebook.auth';
+        return $authProviderId;
     }
 
     protected function createEntryPoint($container, $id, $config, $defaultEntryPointId)

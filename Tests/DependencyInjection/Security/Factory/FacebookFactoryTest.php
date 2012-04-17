@@ -47,10 +47,22 @@ class FacebookFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers FOS\FacebookBundle\DependencyInjection\Security\Factory\FacebookFactory::createAuthProvider
      */
-    public function testThatDoNotCreateUserAuthProviderWhenNotDefinedInConfig()
+    public function testThatCreateUserAuthProviderEvenWhenNotDefinedInConfig()
     {
         $idsArray = $this->facebookFactoryCreate(array('remember_me' => false));
-        $this->assertEquals('fos_facebook.auth', $idsArray[0]);
+        $this->assertEquals('fos_facebook.auth.l3l0', $idsArray[0]);
+    }
+
+    /**
+     * @covers FOS\FacebookBundle\DependencyInjection\Security\Factory\FacebookFactory::createAuthProvider
+     */
+    public function testThatCreateDifferentUserAuthProviderForDifferentFirewalls()
+    {
+        $idsArray = $this->facebookFactoryCreate(array('remember_me' => false));
+        $this->assertEquals('fos_facebook.auth.l3l0', $idsArray[0]);
+
+        $idsArray = $this->facebookFactoryCreate(array('remember_me' => false), 'main');
+        $this->assertEquals('fos_facebook.auth.main', $idsArray[0]);
     }
 
     /**
@@ -75,7 +87,7 @@ class FacebookFactoryTest extends \PHPUnit_Framework_TestCase
      * @param array $config
      * @return array
      */
-    private function facebookFactoryCreate($config = array())
+    private function facebookFactoryCreate($config = array(), $id = 'l3l0')
     {
         $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition', array('addArgument', 'replaceArgument'));
         $definition->expects($this->any())
@@ -89,6 +101,6 @@ class FacebookFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('setDefinition')
             ->will($this->returnValue($definition));
 
-        return $this->factory->create($container, 'l3l0', $config, 'l3l0.user.provider', null);
+        return $this->factory->create($container, $id, $config, 'l3l0.user.provider', null);
     }
 }
