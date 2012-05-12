@@ -7,7 +7,6 @@
     <services>
 
         <service id="fos_facebook.api" class="%fos_facebook.api.class%">
-            <file>%fos_facebook.file%</file>
             <argument type="collection">
                 <argument key="appId">%fos_facebook.app_id%</argument>
                 <argument key="secret">%fos_facebook.secret%</argument>
