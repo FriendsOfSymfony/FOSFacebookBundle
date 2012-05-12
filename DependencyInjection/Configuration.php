@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('app_id')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('file')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('file')->defaultNull()->end()
                 ->scalarNode('cookie')->defaultFalse()->end()
                 ->scalarNode('domain')->defaultNull()->end()
                 ->scalarNode('alias')->defaultNull()->end()
