@@ -5,7 +5,7 @@ This Bundle enables integration of the Facebook PHP and JS SDK's. Furthermore it
 also provides a Symfony2 authentication provider so that users can login to a
 Symfony2 application via Facebook. Furthermore via custom user provider support
 the Facebook login can also be integrated with other data sources like the
-database based solution provided by FOSUserBundle.
+database based solution provided by FOSUserBundle including adding Facebook data to an existing account.
 
 Note that logging in a user requires multiple steps:
 
@@ -321,6 +321,11 @@ to the provider id in the "provider" section in the config.yml:
             return $this->userManager->findUserBy(array('facebookId' => $fbId));
         }
 
+        public function findUserByEmail($email)
+        {
+            return $this->userManager->findUserBy(array('email' => $email));
+        }
+
         public function loadUserByUsername($username)
         {
             $user = $this->findUserByFbId($username);
@@ -332,7 +337,12 @@ to the provider id in the "provider" section in the config.yml:
             }
 
             if (!empty($fbdata)) {
-                if (empty($user)) {
+                // there might be already a user with the same email adress
+                if (null === $user) {
+                    $user = $this->findUserByEmail($fbdata['email']);
+                }
+
+                if (null === $user) {
                     $user = $this->userManager->createUser();
                     $user->setEnabled(true);
                     $user->setPassword('');
@@ -365,7 +375,7 @@ to the provider id in the "provider" section in the config.yml:
         }
     }
 
-Finally one also needs to add a getFacebookId() and setFBData() method to the User model.
+Finally one also needs to add a getFacebookId() and setFBData() method to the User model. It also takes care of already registered users.
 The following example also adds "firstname" and "lastname" properties, using the Doctrine ORM:
 
     <?php
@@ -457,8 +467,10 @@ The following example also adds "firstname" and "lastname" properties, using the
         public function setFacebookId($facebookId)
         {
             $this->facebookId = $facebookId;
-            $this->setUsername($facebookId);
-            $this->salt = '';
+            if (!$this->username) {
+                $this->setUsername($facebookId);
+                $this->salt = '';
+            }
         }
 
         /**
