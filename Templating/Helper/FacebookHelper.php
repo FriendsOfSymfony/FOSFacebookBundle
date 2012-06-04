@@ -77,6 +77,11 @@ class FacebookHelper extends Helper
         ));
     }
 
+    public function logoutUrl($parameters = array(), $name = null)
+    {
+        return $this->facebook->getLogoutUrl($parameters);
+    }
+
     /**
      * @codeCoverageIgnore
      */
