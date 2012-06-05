@@ -1,0 +1,31 @@
+{
+    "name": "friendsofsymfony/facebook-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrate the Facebook Platform into your Symfony2 application.",
+    "keywords": ["facebook"],
+    "homepage": "http://friendsofsymfony.github.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name":"Kris Wallsmith",
+            "email":"kris.wallsmith@gmail.com",
+            "homepage":"http://kriswallsmith.net/"
+        },
+        {
+            "name": "FriendsOfSymfony Community",
+            "homepage": "https://github.com/friendsofsymfony/FOSFacebookBundle/contributors"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.0.*",
+        "facebook/php-sdk": "dev-master"
+    },
+
+    "autoload": {
+        "psr-0": { "FOS\\FacebookBundle": "" }
+    },
+
+    "target-dir": "FOS/FacebookBundle"
+}
