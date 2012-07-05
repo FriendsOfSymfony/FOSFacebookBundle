@@ -157,8 +157,8 @@ Installation
                       fos_facebook:
                           app_url: "http://apps.facebook.com/appName/"
                           server_url: "http://localhost/facebookApp/"
-                          login_path: ^/login
-                          check_path: ^/login_check$
+                          login_path: /login
+                          check_path: /login_check
                           default_target_path: /
                           provider: my_fos_facebook_provider
                       anonymous: true
