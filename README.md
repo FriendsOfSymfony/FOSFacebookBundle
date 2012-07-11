@@ -273,219 +273,222 @@ Example Custom User Provider using the FOS\UserBundle
 -------------------------------------------------------
 
 This requires adding a service for the custom user provider which is then set
-to the provider id in the "provider" section in the config.yml:
+to the provider id in the `provider` section in the `config.yml`:
+```yaml
+# app/config/config.yml
+services:
+    my.facebook.user:
+        class: Acme\MyBundle\Security\User\Provider\FacebookProvider
+        arguments:
+            facebook: "@fos_facebook.api"
+            userManager: "@fos_user.user_manager"
+            validator: "@validator"
+            container: "@service_container"
+```
+```php
+<?php
 
-    services:
-        my.facebook.user:
-            class: Acme\MyBundle\Security\User\Provider\FacebookProvider
-            arguments:
-                facebook: "@fos_facebook.api"
-                userManager: "@fos_user.user_manager"
-                validator: "@validator"
-                container: "@service_container"
+namespace Acme\MyBundle\Security\User\Provider;
 
-    <?php
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use \BaseFacebook;
+use \FacebookApiException;
 
-    namespace Acme\MyBundle\Security\User\Provider;
+class FacebookProvider implements UserProviderInterface
+{
+    /**
+     * @var \Facebook
+     */
+    protected $facebook;
+    protected $userManager;
+    protected $validator;
 
-    use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-    use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-    use Symfony\Component\Security\Core\User\UserProviderInterface;
-    use Symfony\Component\Security\Core\User\UserInterface;
-    use \BaseFacebook;
-    use \FacebookApiException;
-
-    class FacebookProvider implements UserProviderInterface
+    public function __construct(BaseFacebook $facebook, $userManager, $validator)
     {
-        /**
-         * @var \Facebook
-         */
-        protected $facebook;
-        protected $userManager;
-        protected $validator;
+        $this->facebook = $facebook;
+        $this->userManager = $userManager;
+        $this->validator = $validator;
+    }
 
-        public function __construct(BaseFacebook $facebook, $userManager, $validator)
-        {
-            $this->facebook = $facebook;
-            $this->userManager = $userManager;
-            $this->validator = $validator;
+    public function supportsClass($class)
+    {
+        return $this->userManager->supportsClass($class);
+    }
+
+    public function findUserByFbId($fbId)
+    {
+        return $this->userManager->findUserBy(array('facebookId' => $fbId));
+    }
+
+    public function loadUserByUsername($username)
+    {
+        $user = $this->findUserByFbId($username);
+
+        try {
+            $fbdata = $this->facebook->api('/me');
+        } catch (FacebookApiException $e) {
+            $fbdata = null;
         }
 
-        public function supportsClass($class)
-        {
-            return $this->userManager->supportsClass($class);
-        }
-
-        public function findUserByFbId($fbId)
-        {
-            return $this->userManager->findUserBy(array('facebookId' => $fbId));
-        }
-
-        public function loadUserByUsername($username)
-        {
-            $user = $this->findUserByFbId($username);
-
-            try {
-                $fbdata = $this->facebook->api('/me');
-            } catch (FacebookApiException $e) {
-                $fbdata = null;
-            }
-
-            if (!empty($fbdata)) {
-                if (empty($user)) {
-                    $user = $this->userManager->createUser();
-                    $user->setEnabled(true);
-                    $user->setPassword('');
-                }
-
-                // TODO use http://developers.facebook.com/docs/api/realtime
-                $user->setFBData($fbdata);
-
-                if (count($this->validator->validate($user, 'Facebook'))) {
-                    // TODO: the user was found obviously, but doesnt match our expectations, do something smart
-                    throw new UsernameNotFoundException('The facebook user could not be stored');
-                }
-                $this->userManager->updateUser($user);
-            }
-
+        if (!empty($fbdata)) {
             if (empty($user)) {
-                throw new UsernameNotFoundException('The user is not authenticated on facebook');
+                $user = $this->userManager->createUser();
+                $user->setEnabled(true);
+                $user->setPassword('');
             }
 
-            return $user;
-        }
+            // TODO use http://developers.facebook.com/docs/api/realtime
+            $user->setFBData($fbdata);
 
-        public function refreshUser(UserInterface $user)
-        {
-            if (!$this->supportsClass(get_class($user)) || !$user->getFacebookId()) {
-                throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            if (count($this->validator->validate($user, 'Facebook'))) {
+                // TODO: the user was found obviously, but doesnt match our expectations, do something smart
+                throw new UsernameNotFoundException('The facebook user could not be stored');
             }
-
-            return $this->loadUserByUsername($user->getFacebookId());
+            $this->userManager->updateUser($user);
         }
+
+        if (empty($user)) {
+            throw new UsernameNotFoundException('The user is not authenticated on facebook');
+        }
+
+        return $user;
     }
 
-Finally one also needs to add a getFacebookId() and setFBData() method to the User model.
-The following example also adds "firstname" and "lastname" properties, using the Doctrine ORM:
-
-    <?php
-
-    namespace Acme\MyBundle\Entity;
-
-    use FOS\UserBundle\Entity\User as BaseUser;
-    use Doctrine\ORM\Mapping as ORM;
-
-    class User extends BaseUser
+    public function refreshUser(UserInterface $user)
     {
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="firstname", type="string", length=255)
-         */
-        protected $firstname;
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="lastname", type="string", length=255)
-         */
-        protected $lastname;
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="facebookId", type="string", length=255)
-         */
-        protected $facebookId;
-
-        public function serialize()
-        {
-            return serialize(array($this->facebookId, parent::serialize()));
+        if (!$this->supportsClass(get_class($user)) || !$user->getFacebookId()) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        public function unserialize($data)
-        {
-            list($this->facebookId, $parentData) = unserialize($data);
-            parent::unserialize($parentData);
-        }
+        return $this->loadUserByUsername($user->getFacebookId());
+    }
+}
+```
+Finally one also needs to add a `getFacebookId()` and `setFBData()` method to the `User` model.
+The following example also adds `firstname` and `lastname` properties, using the Doctrine ORM:
+```php
+<?php
 
-        /**
-         * @return string
-         */
-        public function getFirstname()
-        {
-            return $this->firstname;
-        }
+namespace Acme\MyBundle\Entity;
 
-        /**
-         * @param string $firstname
-         */
-        public function setFirstname($firstname)
-        {
-            $this->firstname = $firstname;
-        }
+use FOS\UserBundle\Entity\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
 
-        /**
-         * @return string
-         */
-        public function getLastname()
-        {
-            return $this->lastname;
-        }
+class User extends BaseUser
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstname", type="string", length=255)
+     */
+    protected $firstname;
 
-        /**
-         * @param string $lastname
-         */
-        public function setLastname($lastname)
-        {
-            $this->lastname = $lastname;
-        }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastname", type="string", length=255)
+     */
+    protected $lastname;
 
-        /**
-         * Get the full name of the user (first + last name)
-         * @return string
-         */
-        public function getFullName()
-        {
-            return $this->getFirstName() . ' ' . $this->getLastname();
-        }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebookId", type="string", length=255)
+     */
+    protected $facebookId;
 
-        /**
-         * @param string $facebookId
-         * @return void
-         */
-        public function setFacebookId($facebookId)
-        {
-            $this->facebookId = $facebookId;
-            $this->setUsername($facebookId);
-            $this->salt = '';
-        }
+    public function serialize()
+    {
+        return serialize(array($this->facebookId, parent::serialize()));
+    }
 
-        /**
-         * @return string
-         */
-        public function getFacebookId()
-        {
-            return $this->facebookId;
-        }
+    public function unserialize($data)
+    {
+        list($this->facebookId, $parentData) = unserialize($data);
+        parent::unserialize($parentData);
+    }
 
-        /**
-         * @param Array
-         */
-        public function setFBData($fbdata)
-        {
-            if (isset($fbdata['id'])) {
-                $this->setFacebookId($fbdata['id']);
-                $this->addRole('ROLE_FACEBOOK');
-            }
-            if (isset($fbdata['first_name'])) {
-                $this->setFirstname($fbdata['first_name']);
-            }
-            if (isset($fbdata['last_name'])) {
-                $this->setLastname($fbdata['last_name']);
-            }
-            if (isset($fbdata['email'])) {
-                $this->setEmail($fbdata['email']);
-            }
+    /**
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param string $firstname
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param string $lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * Get the full name of the user (first + last name)
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * @param string $facebookId
+     * @return void
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+        $this->setUsername($facebookId);
+        $this->salt = '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param Array
+     */
+    public function setFBData($fbdata)
+    {
+        if (isset($fbdata['id'])) {
+            $this->setFacebookId($fbdata['id']);
+            $this->addRole('ROLE_FACEBOOK');
+        }
+        if (isset($fbdata['first_name'])) {
+            $this->setFirstname($fbdata['first_name']);
+        }
+        if (isset($fbdata['last_name'])) {
+            $this->setLastname($fbdata['last_name']);
+        }
+        if (isset($fbdata['email'])) {
+            $this->setEmail($fbdata['email']);
         }
     }
+}
+```
