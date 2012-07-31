@@ -22,7 +22,7 @@
         "symfony/framework-bundle": "2.1.*",
         "symfony/security-bundle": "2.1.*",
         "symfony/twig-bundle": "2.1.*",
-        "facebook/php-sdk": "dev-master"
+        "facebook/facebook-php-sdk": "dev-master"
     },
 
     "autoload": {
