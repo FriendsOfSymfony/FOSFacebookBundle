@@ -48,7 +48,7 @@ Installation
                 version=origin/2.0
             
             [FacebookSDK]
-                git=git://github.com/facebook/php-sdk.git
+                git=git://github.com/facebook/facebook-php-sdk.git
                 target=/facebook
 
         Run the vendors script:
