@@ -32,40 +32,32 @@ http://symfony.com/doc/current/book/security.html
 
 [![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSFacebookBundle.png?branch=master)](http://travis-ci.org/FriendsOfSymfony/FOSFacebookBundle)
 
+Prerequisites
+============
+
+This version requires Symfony 2.1
+
+
 Installation
 ============
 
-  1. Add this bundle and the Facebook PHP SDK to your ``vendor/`` dir:
-      * Using the vendors script.
+  1. Add the following lines in your composer.json:
 
-        Add the following lines in your ``deps`` file::
+  ```
+{
+    "require": {
+        "friendsofsymfony/facebook-bundle": "dev-master"
+    }
+}
 
-            [FOSFacebookBundle]
-                git=git://github.com/FriendsOfSymfony/FOSFacebookBundle.git
-                target=/bundles/FOS/FacebookBundle
-                version=origin/master
-            
-            [FacebookSDK]
-                git=git://github.com/facebook/facebook-php-sdk.git
-                target=/facebook
+```
+  2. Run the composer to download the bundle
 
-        Run the vendors script:
+``` bash
+$ php composer.phar update friendsofsymfony/facebook-bundle
+```
 
-            php bin/vendors install
-
-      * Using git submodules.
-
-            $ git submodule add git://github.com/FriendsOfSymfony/FOSFacebookBundle.git vendor/bundles/FOS/FacebookBundle
-            $ git submodule add git://github.com/facebook/facebook-php-sdk.git vendor/facebook
-
-  2. Add the FOS namespace to your autoloader:
-
-          // app/autoload.php
-          $loader->registerNamespaces(array(
-                'FOS' => __DIR__.'/../vendor/bundles',
-                // your other namespaces
-          ));
-
+  
   3. Add this bundle to your application's kernel:
 
           // app/ApplicationKernel.php
@@ -157,8 +149,8 @@ Installation
                       fos_facebook:
                           app_url: "http://apps.facebook.com/appName/"
                           server_url: "http://localhost/facebookApp/"
-                          login_path: ^/login
-                          check_path: ^/login_check$
+                          login_path: /login
+                          check_path: /login_check
                           default_target_path: /
                           provider: my_fos_facebook_provider
                       anonymous: true

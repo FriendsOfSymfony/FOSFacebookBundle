@@ -13,8 +13,8 @@ class FacebookSessionPersistence extends \BaseFacebook
 {
     const PREFIX = '_fos_facebook_';
 
-    private $session;
-    private $prefix;
+    protected $session;
+    protected $prefix;
     protected static $kSupportedKeys = array('state', 'code', 'access_token', 'user_id');
 
    /**

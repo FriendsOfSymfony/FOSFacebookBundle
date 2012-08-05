@@ -25,7 +25,9 @@ class FacebookListenerTest extends \PHPUnit_Framework_TestCase
             $this->getAuthenticationManager(),
             $this->getMock('Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface'),
             $this->getHttpUtils(),
-            'providerKey'
+            'providerKey',
+            $this->getMock('Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface'),
+            $this->getMock('Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface')
         );
         $listener->handle($this->getResponseEvent());
     }

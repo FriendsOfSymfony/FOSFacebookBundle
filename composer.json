@@ -1,5 +1,5 @@
 {
-    "name": "friendsofsymfony/facebook-bundle",
+    "name": "bitgandtter/facebook-bundle",
     "type": "symfony-bundle",
     "description": "Integrate the Facebook Platform into your Symfony2 application.",
     "keywords": ["facebook"],
@@ -16,7 +16,7 @@
             "homepage": "https://github.com/friendsofsymfony/FOSFacebookBundle/contributors"
         }
     ],
-
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
         "symfony/framework-bundle": "2.1.*",
