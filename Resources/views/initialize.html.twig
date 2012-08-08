@@ -7,7 +7,7 @@
 {% if async %}
 window.fbAsyncInit = function() {
 {% endif %}
-  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'oauth':oauth, 'status':status, 'cookie':cookie, 'logging':logging }|json_encode }});
+  FB.init({{ {'appId':appId, 'xfbml':xfbml, 'oauth':oauth, 'status':status, 'cookie':cookie, 'logging':logging, 'channelUrl':channelUrl}|json_encode }});
 {% if async %}
   {{ fbAsyncInit }}
 };

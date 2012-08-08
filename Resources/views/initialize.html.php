@@ -12,6 +12,7 @@ window.fbAsyncInit = function() {
     'status' =>  $status,
     'oauth'   => $oauth,
     'cookie'  => $cookie,
+    'channelUrl' => $channelUrl,
     'logging' => $logging)) ?>);
 <?php if (!empty($async)) { ?>
     <?php echo $fbAsyncInit ?>

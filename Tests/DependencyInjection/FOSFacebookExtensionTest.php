@@ -62,6 +62,7 @@ class FOSFacebookExtensionTest extends \PHPUnit_Framework_TestCase
             array('domain' => 'foo'),
             array('logging' => 'foo'),
             array('culture' => 'foo'),
+            array('channel' => array('expire' => 100)),
             array('permissions' => array('email')),
         );
         $extension->load($configs, $container);
@@ -88,6 +89,7 @@ class FOSFacebookExtensionTest extends \PHPUnit_Framework_TestCase
             array('domain' => 'foo'),
             array('logging' => 'foo'),
             array('culture' => 'foo'),
+            array('channel' => array('expire' => 100)),
             array('permissions' => array('email')),
             array('alias' => 'facebook_alias')
         );
