@@ -42,57 +42,61 @@ Installation
 ============
 
   1. Add the following lines in your composer.json:
-
+  
   ```
-{
-    "require": {
-        "friendsofsymfony/facebook-bundle": "dev-master"
-    }
-}
-
-```
+  {
+      "require": {
+          "friendsofsymfony/facebook-bundle": "dev-master"
+      }
+  }
+  
+  ```
   2. Run the composer to download the bundle
 
-``` bash
-$ php composer.phar update friendsofsymfony/facebook-bundle
-```
+  ```bash
+  $ php composer.phar update friendsofsymfony/facebook-bundle
+  ```
 
   
   3. Add this bundle to your application's kernel:
+  ```php
+  // app/ApplicationKernel.php
+  public function registerBundles()
+  {
+      return array(
+          // ...
+          new FOS\FacebookBundle\FOSFacebookBundle(),
+          // ...
+      );
+  }
+  ```
 
-          // app/ApplicationKernel.php
-          public function registerBundles()
-          {
-              return array(
-                  // ...
-                  new FOS\FacebookBundle\FOSFacebookBundle(),
-                  // ...
-              );
-          }
-          
   4. Add the following routes to your application and point them at actual controller actions
-          
-          #application/config/routing.yml
-          _security_check:
-              pattern:  /login_check
-          _security_logout:
-              pattern:  /logout
-
-          #application/config/routing.xml
-          <route id="_security_check" pattern="/login_check" />
-          <route id="_security_logout" pattern="/logout" />     
-
+  ```yml         
+  #application/config/routing.yml
+  _security_check:
+      pattern:  /login_check
+  _security_logout:
+      pattern:  /logout
+  ```
+  ```xml
+  #application/config/routing.xml
+  <route id="_security_check" pattern="/login_check" />
+  <route id="_security_logout" pattern="/logout" />     
+  ```
+  
   5. Configure the `facebook` service in your config:
-
-          # application/config/config.yml
-          fos_facebook:
-              file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
-              alias:  facebook
-              app_id: 123456879
-              secret: s3cr3t
-              cookie: true
-              permissions: [email, user_birthday, user_location]
-
+  ```yml
+  # application/config/config.yml
+  fos_facebook:
+      file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
+      alias:  facebook
+      app_id: 123456879
+      secret: s3cr3t
+      cookie: true
+      permissions: [email, user_birthday, user_location]
+  ```
+  ```xml
           # application/config/config.xml
           <fos_facebook:api
               file="%kernel.root_dir%/../vendor/facebook/src/base_facebook.php"
@@ -105,79 +109,83 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
                 <permission>user_birthday</permission>
                 <permission>user_location</permission>
           </fos_facebook:api>
+  ```
 
-     If you do not include a `file` value in the config you will have to
-     configure your application to autoload the `BaseFacebook` class.
+  If you do not include a `file` value in the config you will have to
+  configure your application to autoload the `BaseFacebook` class.
 
   6. Add this configuration if you want to use the `security component`:
+  ```yml
+  # application/config/config.yml
+  security:
+      firewalls:
+          public:
+              # since anonymous is allowed users will not be forced to login
+              pattern:   ^/.*
+              fos_facebook:
+                  app_url: "http://apps.facebook.com/appName/"
+                  server_url: "http://localhost/facebookApp/"
+              anonymous: true
+              logout:
+                  handlers: ["fos_facebook.logout_handler"]
 
-          # application/config/config.yml
-          security:
-              firewalls:
-                  public:
-                      # since anonymous is allowed users will not be forced to login
-                      pattern:   ^/.*
-                      fos_facebook:
-                          app_url: "http://apps.facebook.com/appName/"
-                          server_url: "http://localhost/facebookApp/"
-                      anonymous: true
-                      logout:
-                          handlers: ["fos_facebook.logout_handler"]
+      access_control:
+          - { path: ^/secured/.*, role: [IS_AUTHENTICATED_FULLY] } # This is the route secured with fos_facebook
+          - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+  ```
 
-              access_control:
-                  - { path: ^/secured/.*, role: [IS_AUTHENTICATED_FULLY] } # This is the route secured with fos_facebook
-                  - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
-
-     You have to add `/secured/` in your routing for this to work. An example would be...
-     
-              _facebook_secured:
-                  pattern: /secured/
-                  defaults: { _controller: AcmeDemoBundle:Welcome:index }
-
+  You have to add `/secured/` in your routing for this to work. An example would be...
+  
+  ```yml
+  _facebook_secured:
+      pattern: /secured/
+      defaults: { _controller: AcmeDemoBundle:Welcome:index }
+  ```
+  
   7. Optionally define a custom user provider class and use it as the provider or define path for login
+  ```yml
+  # application/config/config.yml
+  security:
+      providers:
+          # choose the provider name freely
+          my_fos_facebook_provider:
+              id: my.facebook.user   # see "Example Custom User Provider using the FOS\UserBundle" chapter further down
 
-          # application/config/config.yml
-          security:
-              providers:
-                  # choose the provider name freely
-                  my_fos_facebook_provider:
-                      id: my.facebook.user   # see "Example Custom User Provider using the FOS\UserBundle" chapter further down
-
-              firewalls:
-                  public:
-                      pattern:   ^/.*
-                      fos_facebook:
-                          app_url: "http://apps.facebook.com/appName/"
-                          server_url: "http://localhost/facebookApp/"
-                          login_path: /login
-                          check_path: /login_check
-                          default_target_path: /
-                          provider: my_fos_facebook_provider
-                      anonymous: true
-                      logout:
-                          handlers: ["fos_facebook.logout_handler"]
-          
-          # application/config/config_dev.yml
-          security:
-              firewalls:
-                  public:
-                      fos_facebook:
-                          app_url: "http://apps.facebook.com/appName/"
-                          server_url: "http://localhost/facebookApp/app_dev.php/"     
-
+      firewalls:
+          public:
+              pattern:   ^/.*
+              fos_facebook:
+                  app_url: "http://apps.facebook.com/appName/"
+                  server_url: "http://localhost/facebookApp/"
+                  login_path: /login
+                  check_path: /login_check
+                  default_target_path: /
+                  provider: my_fos_facebook_provider
+              anonymous: true
+              logout:
+                  handlers: ["fos_facebook.logout_handler"]
+  
+  # application/config/config_dev.yml
+  security:
+      firewalls:
+          public:
+              fos_facebook:
+                  app_url: "http://apps.facebook.com/appName/"
+                  server_url: "http://localhost/facebookApp/app_dev.php/"     
+  ```
   8. Optionally use access control to secure specific URLs
+  ```yml
+  # application/config/config.yml
+  security:
+      # ...
+      
+      access_control:
+          - { path: ^/facebook/,           role: [ROLE_FACEBOOK] }
+          - { path: ^/.*,                  role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+  ```
 
-
-          # application/config/config.yml
-          security:
-              # ...
-              
-              access_control:
-                  - { path: ^/facebook/,           role: [ROLE_FACEBOOK] }
-                  - { path: ^/.*,                  role: [IS_AUTHENTICATED_ANONYMOUSLY] }
-       
-    The role `ROLE_FACEBOOK` has to be added in your User class (see Acme\MyBundle\Entity\User::setFBData() below).
-    > Note that the order of access control rules matters!
+  The role `ROLE_FACEBOOK` has to be added in your User class (see `Acme\MyBundle\Entity\User::setFBData()` below).
+  > Note that the order of access control rules matters!
 
 Setting up the JavaScript SDK
 -----------------------------
