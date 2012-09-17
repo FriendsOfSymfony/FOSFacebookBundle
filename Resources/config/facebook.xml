@@ -13,6 +13,7 @@
                 <argument key="secret">%fos_facebook.secret%</argument>
                 <argument key="cookie">%fos_facebook.cookie%</argument>
                 <argument key="domain">%fos_facebook.domain%</argument>
+                <argument key="trustForwarded">%fos_facebook.trust_proxy%</argument>
             </argument>
             <argument type="service" id="session" />
         </service>
