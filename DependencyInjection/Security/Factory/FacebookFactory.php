@@ -24,6 +24,7 @@ class FacebookFactory extends AbstractFactory
         $this->addOption('app_url');
         $this->addOption('server_url');
         $this->addOption('create_user_if_not_exists', false);
+        $this->addOption('redirect_to_facebook_login', true);
     }
 
     public function getPosition()

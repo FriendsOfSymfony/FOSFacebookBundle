@@ -154,8 +154,6 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
                           default_target_path: /
                           provider: my_fos_facebook_provider
                       anonymous: true
-                      logout:
-                          handlers: ["fos_facebook.logout_handler"]
           
           # application/config/config_dev.yml
           security:
