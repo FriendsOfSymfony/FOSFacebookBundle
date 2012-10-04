@@ -72,6 +72,10 @@ class FacebookHelper extends Helper
         $name = $name ?: 'FOSFacebookBundle::loginButton.html.php';
         return $this->templating->render($name, $parameters + array(
             'autologoutlink' => 'false',
+            'size'           => 'small',
+            'showfaces'      => 'false',
+            'width'          => '',
+            'maxrows'        => '',
             'label'          => '',
             'scope'          => implode(',', $this->scope),
         ));
