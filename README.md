@@ -86,7 +86,7 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
 
           # application/config/config.yml
           fos_facebook:
-              file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
+              file:   %kernel.root_dir%/../vendor/facebook/src/php-sdk/base_facebook.php
               alias:  facebook
               app_id: 123456879
               secret: s3cr3t
@@ -95,7 +95,7 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
 
           # application/config/config.xml
           <fos_facebook:api
-              file="%kernel.root_dir%/../vendor/facebook/src/base_facebook.php"
+              file="%kernel.root_dir%/../vendor/facebook/src/php-sdk/base_facebook.php"
               alias="facebook"
               app_id="123456879"
               secret="s3cr3t"
