@@ -1,5 +1,5 @@
 {
-    "name": "friendsofsymfony/facebook-bundle",
+    "name": "bitgandtter/facebook-bundle",
     "type": "symfony-bundle",
     "description": "Integrate the Facebook Platform into your Symfony2 application.",
     "keywords": ["facebook"],
