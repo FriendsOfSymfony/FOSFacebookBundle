@@ -248,13 +248,13 @@ check for `response.session` to redirect to the "logout" route:
       }
     
       function onFbInit() {
-          if (typeof(FB) != 'undefined' && FB != null ) {
-              FB.Event.subscribe('auth.statusChange', function(response) {
-                  if (response.session || response.authResponse) {
-                      setTimeout(goLogIn, 500);
-                  } else {
-                      window.location.href = "{{ path('_security_logout') }}";
-                  }
+          if (typeof(FB) != 'undefined' && FB != null ) {              
+              //NOTE: auth.statusChange is deprecated and the old logout didn't work properly
+              FB.Event.subscribe('auth.login', function(response) {
+                    setTimeout(goLogIn, 500);
+              });              
+              FB.Event.subscribe('auth.logout', function(response) {
+                    window.location.href = "{{ path('_security_logout') }}";
               });
           }
       }
