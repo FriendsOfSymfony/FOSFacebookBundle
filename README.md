@@ -317,31 +317,34 @@ to the provider id in the "provider" section in the config.yml:
         {
             $user = $this->findUserByFbId($username);
 
-            try {
-                $fbdata = $this->facebook->api('/me');
-            } catch (FacebookApiException $e) {
-                $fbdata = null;
-            }
+            // if the user was not found, create a new one from Facebook
+            if(!is_object($user) || empty($user)){
+                try {
+                    $fbdata = $this->facebook->api('/me');
+                } catch (FacebookApiException $e) {
+                    $fbdata = null;
+                }
 
-            if (!empty($fbdata)) {
+                if (!empty($fbdata)) {
+                    if (empty($user)) {
+                        $user = $this->userManager->createUser();
+                        $user->setEnabled(true);
+                        $user->setPassword('');
+                    }
+
+                    // TODO use http://developers.facebook.com/docs/api/realtime
+                    $user->setFBData($fbdata);
+
+                    if (count($this->validator->validate($user, 'Facebook'))) {
+                        // TODO: the user was found obviously, but doesnt match our expectations, do something smart
+                        throw new UsernameNotFoundException('The facebook user could not be stored');
+                    }
+                    $this->userManager->updateUser($user);
+                }
+
                 if (empty($user)) {
-                    $user = $this->userManager->createUser();
-                    $user->setEnabled(true);
-                    $user->setPassword('');
+                    throw new UsernameNotFoundException('The user is not authenticated on facebook');
                 }
-
-                // TODO use http://developers.facebook.com/docs/api/realtime
-                $user->setFBData($fbdata);
-
-                if (count($this->validator->validate($user, 'Facebook'))) {
-                    // TODO: the user was found obviously, but doesnt match our expectations, do something smart
-                    throw new UsernameNotFoundException('The facebook user could not be stored');
-                }
-                $this->userManager->updateUser($user);
-            }
-
-            if (empty($user)) {
-                throw new UsernameNotFoundException('The user is not authenticated on facebook');
             }
 
             return $user;
