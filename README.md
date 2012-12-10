@@ -49,17 +49,17 @@ Installation
         "friendsofsymfony/facebook-bundle": "dev-master"
     }
 }
-
-```
+  ```
+  
   2. Run the composer to download the bundle
 
-``` bash
-$ php composer.phar update friendsofsymfony/facebook-bundle
-```
+  ``` bash
+  $ php composer.phar update friendsofsymfony/facebook-bundle
+  ```
 
   
   3. Add this bundle to your application's kernel:
-
+  ``` 
           // app/ApplicationKernel.php
           public function registerBundles()
           {
@@ -69,21 +69,21 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
                   // ...
               );
           }
-          
+  ```        
   4. Add the following routes to your application and point them at actual controller actions
-          
+  ```
           #application/config/routing.yml
           _security_check:
               pattern:  /login_check
           _security_logout:
               pattern:  /logout
-
+  ```
           #application/config/routing.xml
           <route id="_security_check" pattern="/login_check" />
           <route id="_security_logout" pattern="/logout" />     
 
   5. Configure the `facebook` service in your config:
-
+  ```
           # application/config/config.yml
           fos_facebook:
               file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
@@ -92,7 +92,7 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
               secret: s3cr3t
               cookie: true
               permissions: [email, user_birthday, user_location]
-
+  ```
           # application/config/config.xml
           <fos_facebook:api
               file="%kernel.root_dir%/../vendor/facebook/src/base_facebook.php"
@@ -135,7 +135,7 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
                   defaults: { _controller: AcmeDemoBundle:Welcome:index }
 
   7. Optionally define a custom user provider class and use it as the provider or define path for login
-
+  ```
           # application/config/config.yml
           security:
               providers:
@@ -156,7 +156,7 @@ $ php composer.phar update friendsofsymfony/facebook-bundle
                       anonymous: true
                       logout:
                           handlers: ["fos_facebook.logout_handler"]
-          
+  ```
           # application/config/config_dev.yml
           security:
               firewalls:
@@ -266,7 +266,7 @@ Example Custom User Provider using the FOS\UserBundle
 
 This requires adding a service for the custom user provider which is then set
 to the provider id in the "provider" section in the config.yml:
-
+  ```
     services:
         my.facebook.user:
             class: Acme\MyBundle\Security\User\Provider\FacebookProvider
@@ -276,6 +276,7 @@ to the provider id in the "provider" section in the config.yml:
                 validator: "@validator"
                 container: "@service_container"
 
+  ```
     <?php
 
     namespace Acme\MyBundle\Security\User\Provider;
