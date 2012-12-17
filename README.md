@@ -95,7 +95,7 @@ Installation
   ```
           # application/config/config.xml
           <fos_facebook:api
-              file="%kernel.root_dir%/../vendor/facebook/src/base_facebook.php"
+              file="%kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php"
               alias="facebook"
               app_id="123456879"
               secret="s3cr3t"
