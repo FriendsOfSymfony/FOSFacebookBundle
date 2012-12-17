@@ -86,7 +86,7 @@ Installation
   ```
           # application/config/config.yml
           fos_facebook:
-              file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
+              file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
               alias:  facebook
               app_id: 123456879
               secret: s3cr3t
