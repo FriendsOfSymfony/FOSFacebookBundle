@@ -267,6 +267,14 @@ check for `response.session` to redirect to the `logout` route:
 Example Custom User Provider using the FOS\UserBundle
 -------------------------------------------------------
 
+>If you still want to use the FOSUserBudle form login add the "chainprovider" configuration parameter to your security.yml
+>
+>      providers:
+>        chainprovider:
+>            providers: [fos_user_bundle, my_fos_facebook_provider]
+>        fos_user_bundle: ...
+>        my_fos_facebook_provider: ...
+
 This requires adding a service for the custom user provider which is then set
 to the provider id in the "provider" section in the config.yml:
   ```
