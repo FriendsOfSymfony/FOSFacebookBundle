@@ -207,7 +207,7 @@ the opening `body` tag:
           <!-- inside a php template -->
           <?php echo $view['facebook']->initialize(array('xfbml' => true, 'fbAsyncInit' => 'onFbInit();')) ?>
           <!-- inside a twig template -->
-          {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+          {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': block('fbAsyncInit')}) }}
 
 Note that `fbAsyncInit` is a parameter helping you to execute JavaScript within 
 the function initializing the connection with Facebook, just after the `FB.init();`
