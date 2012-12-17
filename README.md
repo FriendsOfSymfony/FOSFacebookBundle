@@ -440,7 +440,7 @@ The following example also adds "firstname" and "lastname" properties, using the
          */
         public function getFullName()
         {
-            return $this->getFirstName() . ' ' . $this->getLastname();
+            return $this->getFirstname() . ' ' . $this->getLastname();
         }
 
         /**
