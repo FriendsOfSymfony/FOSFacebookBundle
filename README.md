@@ -186,13 +186,14 @@ A templating helper is included for loading the Facebook JavaScript SDK and
 initializing it with parameters from your service container. To setup the
 Facebook JavaScript environment, add the following to your layout just after
 the opening `body` tag:
-
-      <body>
-          <!-- inside a php template -->
-          <?php echo $view['facebook']->initialize(array('xfbml' => true, 'fbAsyncInit' => 'onFbInit();')) ?>
-          <!-- inside a twig template -->
-          {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
-
+```php
+<?php // inside a php template ?>
+<?php echo $view['facebook']->initialize(array('xfbml' => true, 'fbAsyncInit' => 'onFbInit();')) ?>
+```
+```html+jinja
+<!-- inside a twig template -->
+{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+```
 Note that `fbAsyncInit` is a parameter helping you to execute JavaScript within 
 the function initializing the connection with Facebook, just after the `FB.init();`
 call. `onFbInit();` is a JavaScript function defined furthermore to execute functions
@@ -200,9 +201,9 @@ which need `FB` initialized.
 
 If you will be adding XFBML markup to your site you may also declare the
 namespace, perhaps in the opening `html` tag:
-
-      <html xmlns:fb="http://www.facebook.com/2008/fbml">
-
+```html
+<html xmlns:fb="http://www.facebook.com/2008/fbml">
+```
 Include the login button in your templates
 ------------------------------------------
 
