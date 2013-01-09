@@ -215,6 +215,18 @@ Just add the following code in one of your templates:
 <!-- inside a twig template -->
 {{ facebook_login_button({'autologoutlink': true}) }}
 ```
+
+Note  if you want customize the the login button, you can set these parameters into :
+
+  - label     : The text that shows in the button.
+  - showFaces : Specifies whether to show faces underneath the Login button.
+  - width     : The width of the plugin in pixels. Default width: 200px.
+  - maxRows   : The maximum number of rows of profile pictures to display. Default value: 1.
+  - scope     : A comma separated list of extended permissions.
+  - registrationUrl : Registration page url. If the user has not registered for your site, they will be redirected to the URL you specify in the registrationUrl parameter.
+  - size      : Different sized buttons: small, medium, large, xlarge (default: medium).
+
+
 Note that with this approach only the login and connecting with Facebook will
 be handled. The step of logging in the user into your Symfony2 application
 still needs to be triggered. To do this you will in most cases simply subscribe

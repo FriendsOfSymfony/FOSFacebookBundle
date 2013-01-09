@@ -67,9 +67,14 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('render')
             ->with('FOSFacebookBundle::loginButton.html.php', array(
-                'autologoutlink' => 'false',
-                'label'          => 'testLabel',
-                'scope'          => '1,2,3',
+                'autologoutlink'  => 'false',
+                'label'           => 'testLabel',
+                'showFaces'       => 'false',
+                'width'           => '',
+                'maxRows'         => '1',
+                'scope'           => '1,2,3',
+                'registrationUrl' => '',
+                'size'            => 'medium'
             ))
             ->will($this->returnValue($expected));
 
