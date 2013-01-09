@@ -17,17 +17,77 @@ class FacebookSessionPersistence extends \BaseFacebook
     protected $prefix;
     protected static $kSupportedKeys = array('state', 'code', 'access_token', 'user_id');
 
-   /**
-    * @param array $config the application configuration.
-    * @see BaseFacebook::__construct in facebook.php
-    */
+    /**
+     * @param array $config the application configuration.
+     * @see BaseFacebook::__construct in facebook.php
+     */
     public function __construct($config, Session $session, $prefix = self::PREFIX)
     {
         $this->session = $session;
         $this->prefix  = $prefix;
-        $this->session->start();
 
-        parent::__construct($config);
+        $this->setAppId($config['appId']);
+        $this->setAppSecret($config['secret']);
+        if (isset($config['fileUpload'])) {
+            $this->setFileUploadSupport($config['fileUpload']);
+        }
+        if (isset($config['trustForwarded']) && $config['trustForwarded']) {
+            $this->trustForwarded = true;
+        }
+    }
+
+    public function getLoginUrl($params = array())
+    {
+        $this->establishCSRFTokenState();
+        $currentUrl = $this->getCurrentUrl();
+
+        // if 'scope' is passed as an array, convert to comma separated list
+        $scopeParams = isset($params['scope']) ? $params['scope'] : null;
+        if ($scopeParams && is_array($scopeParams)) {
+            $params['scope'] = implode(',', $scopeParams);
+        }
+
+        return $this->getUrl(
+            'www',
+            'dialog/oauth',
+            array_merge(
+                array(
+                    'client_id' => $this->getAppId(),
+                    'redirect_uri' => $currentUrl, // possibly overwritten
+                    'state' => $this->getState(),
+                ),
+                $params
+            )
+        );
+    }
+
+    protected function getCode()
+    {
+        if (isset($_REQUEST['code'])) {
+            if ($this->getState() !== null &&
+                isset($_REQUEST['state']) &&
+                $this->getState() === $_REQUEST['state']) {
+
+                    // CSRF state has done its job, so clear it
+                    $this->setState(null);
+                    $this->clearPersistentData('state');
+
+                    return $_REQUEST['code'];
+            } else {
+                self::errorLog('CSRF state token does not match one provided.');
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    protected function establishCSRFTokenState()
+    {
+        if ($this->getState() === null) {
+            $this->setState(md5(uniqid(mt_rand(), true)));
+        }
     }
 
     /**
@@ -43,6 +103,7 @@ class FacebookSessionPersistence extends \BaseFacebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to setPersistentData.');
+
             return;
         }
 
@@ -61,16 +122,16 @@ class FacebookSessionPersistence extends \BaseFacebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to getPersistentData.');
+
             return $default;
         }
-        
+
         $sessionVariableName = $this->constructSessionVariableName($key);
         if ($this->session->has($sessionVariableName)) {
             return $this->session->get($sessionVariableName);
         }
 
         return $default;
-
     }
 
     /**
@@ -83,6 +144,7 @@ class FacebookSessionPersistence extends \BaseFacebook
     {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to clearPersistentData.');
+
             return;
         }
 
@@ -105,12 +167,25 @@ class FacebookSessionPersistence extends \BaseFacebook
         }
     }
 
-    protected function constructSessionVariableName($key) 
+    protected function constructSessionVariableName($key)
     {
-        return $this->prefix.implode('_', array(
-            'fb',
-            $this->getAppId(),
-            $key,
-        ));
+        return $this->prefix.implode(
+            '_',
+            array(
+                'fb',
+                $this->getAppId(),
+                $key,
+            )
+        );
+    }
+
+    private function getState()
+    {
+        return $this->getPersistentData('state', null);
+    }
+
+    private function setState($state)
+    {
+        $this->setPersistentData('state', $state);
     }
 }
