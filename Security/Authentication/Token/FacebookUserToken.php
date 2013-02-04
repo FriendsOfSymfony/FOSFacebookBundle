@@ -17,7 +17,9 @@ class FacebookUserToken extends AbstractToken
 {
     private $providerKey;
 
-    public function __construct($providerKey, $uid = '', array $roles = array())
+    protected $accessToken;
+
+    public function __construct($providerKey, $uid = '', array $roles = array(), $accessToken = null)
     {
         parent::__construct($roles);
 
@@ -28,6 +30,8 @@ class FacebookUserToken extends AbstractToken
         }
 
         $this->providerKey = $providerKey;
+
+        $this->accessToken = $accessToken;
     }
 
     public function getCredentials()
@@ -38,6 +42,11 @@ class FacebookUserToken extends AbstractToken
     public function getProviderKey()
     {
         return $this->providerKey;
+    }
+
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 
     public function serialize()

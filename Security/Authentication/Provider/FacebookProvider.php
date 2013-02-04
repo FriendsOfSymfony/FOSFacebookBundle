@@ -62,15 +62,18 @@ class FacebookProvider implements AuthenticationProviderInterface
         if ($user instanceof UserInterface) {
             $this->userChecker->checkPostAuth($user);
 
-            $newToken = new FacebookUserToken($this->providerKey, $user, $user->getRoles());
+            $newToken = new FacebookUserToken($this->providerKey, $user, $user->getRoles(), $token->getAccessToken());
             $newToken->setAttributes($token->getAttributes());
 
             return $newToken;
         }
 
         try {
+            if (!is_null($token->getAccessToken())) {
+                $this->facebook->setAccessToken($token->getAccessToken());
+            }
             if ($uid = $this->facebook->getUser()) {
-                $newToken = $this->createAuthenticatedToken($uid);
+                $newToken = $this->createAuthenticatedToken($uid, $token->getAccessToken());
                 $newToken->setAttributes($token->getAttributes());
 
                 return $newToken;
@@ -89,10 +92,10 @@ class FacebookProvider implements AuthenticationProviderInterface
         return $token instanceof FacebookUserToken && $this->providerKey === $token->getProviderKey();
     }
 
-    protected function createAuthenticatedToken($uid)
+    protected function createAuthenticatedToken($uid, $accessToken = null)
     {
         if (null === $this->userProvider) {
-            return new FacebookUserToken($this->providerKey, $uid);
+            return new FacebookUserToken($this->providerKey, $uid, array(), $accessToken);
         }
 
         try {
@@ -110,6 +113,6 @@ class FacebookProvider implements AuthenticationProviderInterface
             throw new \RuntimeException('User provider did not return an implementation of user interface.');
         }
 
-        return new FacebookUserToken($this->providerKey, $user, $user->getRoles());
+        return new FacebookUserToken($this->providerKey, $user, $user->getRoles(), $accessToken);
     }
 }
