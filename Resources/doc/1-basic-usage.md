@@ -77,7 +77,7 @@ Basic usage
 6. Add this configuration if you want to use the `security component`:
 
   ```yaml
-          # application/config/config.yml
+          # application/config/security.yml
           security:
               firewalls:
                   public:
