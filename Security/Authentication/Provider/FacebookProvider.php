@@ -68,10 +68,14 @@ class FacebookProvider implements AuthenticationProviderInterface
             return $newToken;
         }
 
+        if (!is_null($token->getAccessToken())) {
+              $this->facebook->setAccessToken($token->getAccessToken());
+        }
+
         if ($uid = $this->facebook->getUser()) {
-            $newToken = $this->createAuthenticatedToken($uid);
+            $newToken = $this->createAuthenticatedToken($uid,$token->getAccessToken());
             $newToken->setAttributes($token->getAttributes());
- 
+
             return $newToken;
         }
 
