@@ -3,6 +3,7 @@
 namespace FOS\FacebookBundle\Facebook;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Implements Symfony2 session persistence for Facebook.
@@ -31,9 +32,8 @@ class FacebookSessionPersistence extends \BaseFacebook
         if (isset($config['fileUpload'])) {
             $this->setFileUploadSupport($config['fileUpload']);
         }
-        if (isset($config['trustForwarded']) && $config['trustForwarded']) {
-            $this->trustForwarded = true;
-        }
+        // Add trustProxy configuration
+        $this->trustForwarded = isset($config['trustForwarded']) ? $config['trustForwarded'] : Request::isProxyTrusted();
     }
 
     public function getLoginUrl($params = array())
