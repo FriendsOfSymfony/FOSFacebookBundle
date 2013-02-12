@@ -1,8 +1,8 @@
 Integration with FOSUserBundle
 ------------------------------
 
->If you still want to use the FOSUserBudle form login add the "chainprovider" configuration parameter to your security.yml
->
+If you still want to use the FOSUserBundle form login, add the "chainprovider" configuration parameter to your ```security.yml```:
+
 >      providers:
 >        chainprovider:
 >           chain:
@@ -10,8 +10,8 @@ Integration with FOSUserBundle
 >        fos_user_bundle: ...
 >        my_fos_facebook_provider: ...
 
-This requires adding a service for the custom user provider which is then set
-to the provider id in the "provider" section in the config.yml:
+This requires adding a service for the custom user provider, which is then set
+to the provider id in the "provider" section in ```config.yml```:
   ```
     services:
         my.facebook.user:
@@ -104,7 +104,7 @@ to the provider id in the "provider" section in the config.yml:
         }
     }
 
-Finally one also needs to add a getFacebookId() and setFBData() method to the User model.
+Finally one also needs to add getFacebookId() and setFBData() methods to the User model.
 The following example also adds "firstname" and "lastname" properties, using the Doctrine ORM:
 
     <?php

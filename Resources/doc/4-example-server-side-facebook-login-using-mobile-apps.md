@@ -1,7 +1,7 @@
 Example Server-Side Facebook Login using Mobile Apps
 -------------------------------------------------------
 
-If you use JavaScript SDK to login by web, the normal flow would be as follows:
+If you use the JavaScript SDK to login by web, the normal flow would be as follows:
 
   1. Click Facebook login button from your page.
   2. It will go to Facebook OAuth API
@@ -9,7 +9,7 @@ If you use JavaScript SDK to login by web, the normal flow would be as follows:
   ```
 https://www.facebook.com/dialog/oauth?client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&scope=<scope>
   ```        
-  3. After user accepts the Facebook application, it will go back to your site `redirect_uri`:
+  3. After user accepts the Facebook application, it will go back to your site's `redirect_uri`:
 
   ```
 https://localhost/facebookApp/login_check?state=<state>&code=<code>#_=_
@@ -26,6 +26,6 @@ https://localhost/facebookApp/login_check?access_token=<access_token>
   ```        
 
 __ATTENTION__: Since an access token provides secure access to Facebook APIs on
-behalf of the user, we shall always pass the token in HTTPS only. Please read
+behalf of the user, we must always pass the token using HTTPS. Please read
 the section Sharing of Access Tokens from [Facebook Developers](https://developers.facebook.com/docs/concepts/login/access-tokens-and-types/)
 before using this mechanism.

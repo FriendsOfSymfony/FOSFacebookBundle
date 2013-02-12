@@ -175,7 +175,7 @@ namespace, perhaps in the opening `html` tag:
 Include the login button in your templates
 ------------------------------------------
 
-Just add the following code in one of your templates:
+Add the following code in one of your templates:
 ```php
 <?php // inside a php template ?>
 <?php echo $view['facebook']->loginButton(array('autologoutlink' => true)) ?>
@@ -184,7 +184,7 @@ Just add the following code in one of your templates:
 {# inside a twig template #}
 {{ facebook_login_button({'autologoutlink': true}) }}
 ```
-If you want customize the the login button, you can set these parameters into:
+If you want customize the the login button, you can set these parameters:
 
   - label     : The text that shows in the button.
   - showFaces : Specifies whether to show faces underneath the Login button.
@@ -195,9 +195,9 @@ If you want customize the the login button, you can set these parameters into:
   - size      : Different sized buttons: small, medium, large, xlarge (default: medium).
 
 
-Note that with this approach only the login and connecting with Facebook will
+Note that with this approach, only the login and connecting with Facebook will
 be handled. The step of logging in the user into your Symfony2 application
-still needs to be triggered. To do this you will in most cases simply subscribe
+still needs to be triggered. To do this you, will in most cases simply subscribe
 to the `auth.statusChange` event and then redirect to the `check_path`:
 ```html+jinja
 <script>
@@ -215,7 +215,7 @@ to the `auth.statusChange` event and then redirect to the `check_path`:
 </script>
 ```  
 Note that we wait 500ms before redirecting to let the browser dealing with the 
-Facebook cookie. You can avoid this step but you might get this error message:
+Facebook cookie. You can avoid this step, but you might get this error message:
 *"The Facebook user could not be retrieved from the session."*
 
 The `_security_check` route would need to point to a `/login_check` pattern
