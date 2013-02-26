@@ -20,7 +20,6 @@ to the provider id in the "provider" section in ```config.yml```:
                 facebook: "@fos_facebook.api"
                 userManager: "@fos_user.user_manager"
                 validator: "@validator"
-                container: "@service_container"
 
   ```
     <?php
