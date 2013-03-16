@@ -1,10 +1,10 @@
 Integration with FOSUserBundle
 ------------------------------
 
-If you still want to use the FOSUserBundle form login, add the "chainprovider" configuration parameter to your ```security.yml```:
+If you still want to use the FOSUserBundle form login, add the "chain_provider" configuration parameter to your ```security.yml```:
 
 >      providers:
->        chainprovider:
+>        chain_provider:
 >           chain:
 >               providers: [fos_user_bundle, my_fos_facebook_provider]
 >        fos_user_bundle: ...
