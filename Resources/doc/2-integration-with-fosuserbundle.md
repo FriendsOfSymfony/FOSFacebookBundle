@@ -196,7 +196,6 @@ The following example also adds "firstname" and "lastname" properties, using the
         {
             $this->facebookId = $facebookId;
             $this->setUsername($facebookId);
-            $this->salt = '';
         }
 
         /**
