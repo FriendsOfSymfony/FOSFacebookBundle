@@ -41,7 +41,10 @@ class FacebookExtension extends \Twig_Extension
             array( 'is_safe' => array( 'html' ) )),
         'facebook_login_button' => new \Twig_Function_Method( $this, 'renderLoginButton',
             array( 'is_safe' => array( 'html' ) )),
-        'facebook_logout_url' => new \Twig_Function_Method( $this, 'renderLogoutUrl', array( 'is_safe' => array( 'html' ) )), );
+        'facebook_trigger_login' => new \Twig_Function_Method( $this, 'renderOnClicLogin',
+            array( 'is_safe' => array( 'html' ) )),
+        'facebook_logout_url' => new \Twig_Function_Method( $this, 'renderLogoutUrl',
+            array( 'is_safe' => array( 'html' ) )), );
   }
   
   /**
@@ -71,8 +74,17 @@ class FacebookExtension extends \Twig_Extension
   
   public function renderLoginButton( $parameters = array( ), $name = null )
   {
+    return $this->container->get( 'fos_facebook.helper' )->loginButton( );
+  }
+  
+  /**
+   * @see FacebookHelper::renderOnClicLogin()
+   */
+  
+  public function renderOnClicLogin( $parameters = array( ), $name = null )
+  {
     return $this->container->get( 'fos_facebook.helper' )
-        ->loginButton( $parameters, $name ? : 'FOSFacebookBundle::loginButton.html.twig' );
+        ->renderOnClicLogin( $parameters, $name ? : 'FOSFacebookBundle::triggerLogin.html.twig' );
   }
   
   /**
