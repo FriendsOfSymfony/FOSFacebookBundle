@@ -9,5 +9,6 @@
  * file that was distributed with this source code.
  */
 
-class FacebookApiException extends \Exception {
+class FacebookApiException extends \Exception
+{
 }

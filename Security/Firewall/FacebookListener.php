@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FacebookListener extends AbstractAuthenticationListener
 {
-
+  
   protected function attemptAuthentication( Request $request )
   {
     if ( !$request->getQueryString( ) )

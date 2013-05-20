@@ -1,30 +1,34 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <services>
-        <service id="fos_facebook.auth" class="FOS\FacebookBundle\Security\Authentication\Provider\FacebookProvider" public="false">
-            <argument /> <!-- Provider-shared Key -->
-            <argument type="service" id="fos_facebook.api" />
-        </service>
+	<services>
+		<service id="fos_facebook.auth"
+			class="FOS\FacebookBundle\Security\Authentication\Provider\FacebookProvider"
+			public="false">
+			<argument /> <!-- Provider-shared Key -->
+			<argument type="service" id="fos_facebook.api" />
+		</service>
 
-        <service id="fos_facebook.logout_handler" class="FOS\FacebookBundle\Security\Logout\FacebookHandler" public="false">
-            <argument type="service" id="fos_facebook.api" />
-        </service>
+		<service id="fos_facebook.logout_handler"
+			class="FOS\FacebookBundle\Security\Logout\FacebookHandler" public="false">
+			<argument type="service" id="fos_facebook.api" />
+		</service>
 
-        <service id="fos_facebook.security.authentication.listener"
-                 class="FOS\FacebookBundle\Security\Firewall\FacebookListener"
-                 parent="security.authentication.listener.abstract"
-                 abstract="true">
-        </service>
+		<service id="fos_facebook.security.authentication.listener"
+			class="FOS\FacebookBundle\Security\Firewall\FacebookListener" parent="security.authentication.listener.abstract"
+			abstract="true">
+		</service>
 
-        <service id="fos_facebook.security.authentication.entry_point" class="FOS\FacebookBundle\Security\EntryPoint\FacebookAuthenticationEntryPoint" public="false" abstract="true">
-            <argument type="service" id="fos_facebook.api" />
-            <argument type="collection" />
-            <argument>%fos_facebook.permissions%</argument>
-        </service>
+		<service id="fos_facebook.security.authentication.entry_point"
+			class="FOS\FacebookBundle\Security\EntryPoint\FacebookAuthenticationEntryPoint"
+			public="false" abstract="true">
+			<argument type="service" id="fos_facebook.api" />
+			<argument type="collection" />
+			<argument>%fos_facebook.permissions%</argument>
+		</service>
 
-    </services>
+	</services>
 </container>

@@ -10,7 +10,6 @@
  */
 
 namespace FOS\FacebookBundle\Security\Logout;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -23,15 +22,15 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
  */
 class FacebookHandler implements LogoutHandlerInterface
 {
-    private $facebook;
-
-    public function __construct(\BaseFacebook $facebook)
-    {
-        $this->facebook = $facebook;
-    }
-
-    public function logout(Request $request, Response $response, TokenInterface $token)
-    {
-        $this->facebook->destroySession();
-    }
+  private $facebook;
+  
+  public function __construct( \BaseFacebook $facebook )
+  {
+    $this->facebook = $facebook;
+  }
+  
+  public function logout( Request $request, Response $response, TokenInterface $token )
+  {
+    $this->facebook->destroySession( );
+  }
 }
