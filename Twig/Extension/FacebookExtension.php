@@ -74,7 +74,8 @@ class FacebookExtension extends \Twig_Extension
   
   public function renderLoginButton( $parameters = array( ), $name = null )
   {
-    return $this->container->get( 'fos_facebook.helper' )->loginButton( );
+    return $this->container->get( 'fos_facebook.helper' )
+        ->loginButton( $parameters, $name ? : 'FOSFacebookBundle::loginButton.html.twig' );
   }
   
   /**
@@ -83,8 +84,7 @@ class FacebookExtension extends \Twig_Extension
   
   public function renderOnClicLogin( $parameters = array( ), $name = null )
   {
-    return $this->container->get( 'fos_facebook.helper' )
-        ->renderOnClicLogin( $parameters, $name ? : 'FOSFacebookBundle::triggerLogin.html.twig' );
+    return $this->container->get( 'fos_facebook.helper' )->renderOnClicLogin( );
   }
   
   /**

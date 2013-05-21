@@ -73,7 +73,7 @@ class FacebookHelper extends Helper
   
   public function renderOnClicLogin( )
   {
-    return $this->templating->render( 'FOSFacebookBundle::triggerLogin.html.php' );
+    return $this->templating->render( 'FOSFacebookBundle::triggerLogin.html.twig' );
   }
   
   public function logoutUrl( $parameters = array( ), $name = null )
