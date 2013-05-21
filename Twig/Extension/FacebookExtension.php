@@ -41,7 +41,7 @@ class FacebookExtension extends \Twig_Extension
             array( 'is_safe' => array( 'html' ) )),
         'facebook_login_button' => new \Twig_Function_Method( $this, 'renderLoginButton',
             array( 'is_safe' => array( 'html' ) )),
-        'facebook_trigger_login' => new \Twig_Function_Method( $this, 'renderOnClicLogin',
+        'facebook_trigger_login' => new \Twig_Function_Method( $this, 'renderOnClickLogin',
             array( 'is_safe' => array( 'html' ) )),
         'facebook_logout_url' => new \Twig_Function_Method( $this, 'renderLogoutUrl',
             array( 'is_safe' => array( 'html' ) )), );
@@ -82,7 +82,7 @@ class FacebookExtension extends \Twig_Extension
    * @see FacebookHelper::renderOnClicLogin()
    */
   
-  public function renderOnClicLogin( $parameters = array( ), $name = null )
+  public function renderOnClickLogin( $parameters = array( ), $name = null )
   {
     return $this->container->get( 'fos_facebook.helper' )->renderOnClicLogin( );
   }
