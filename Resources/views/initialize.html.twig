@@ -1,9 +1,11 @@
+{% if not onlycode %}
 <div id="fb-root"></div>
 {% if not async %}
 <script type="text/javascript"
 	src="http://connect.facebook.net/{{ culture }}/all.js"></script>
 {% endif %}
 <script type="text/javascript">
+{% endif %}
 {% autoescape false %}
 {% if async %}
 window.fbAsyncInit = function() {
@@ -21,4 +23,6 @@ window.fbAsyncInit = function() {
 }());
 {% endif %}
 {% endautoescape %}
+{% if not onlycode %}
 </script>
+{% endif %}

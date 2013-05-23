@@ -1,3 +1,5 @@
+<?php if ( empty( $onlycode ) ) 
+{ ?>
 <div id="fb-root"></div>
 <?php if ( empty( $async ) )
 { ?>
@@ -5,6 +7,7 @@
 	src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
 <?php } ?>
 <script type="text/javascript">
+<? } ?>
 <?php if ( !empty( $async ) )
 { ?>
 window.fbAsyncInit = function() {
@@ -25,4 +28,7 @@ window.fbAsyncInit = function() {
   document.getElementById('fb-root').appendChild(e);
 })();
 <?php } ?>
+<?php if ( empty( $onlycode ) )
+{ ?>
 </script>
+<?php } ?>

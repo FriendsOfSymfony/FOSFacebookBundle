@@ -1,1 +1,1 @@
-onclick="FB.login(function(response){}, {scope: '{{ scope }}'});"
+{% if not onlycode %}onclick="{% endif %}FB.login(function(response){}, {scope: '{{ scope }}'});{% if not onlycode %}"{% endif %}

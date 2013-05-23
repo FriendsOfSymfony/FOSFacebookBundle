@@ -82,9 +82,9 @@ class FacebookExtension extends \Twig_Extension
    * @see FacebookHelper::renderOnClicLogin()
    */
   
-  public function renderOnClickLogin( $parameters = array( ), $name = null )
+  public function renderOnClickLogin( $onlycode = false, $name = null )
   {
-    return $this->container->get( 'fos_facebook.helper' )->renderOnClickLogin( );
+    return $this->container->get( 'fos_facebook.helper' )->renderOnClickLogin( $onlycode );
   }
   
   /**

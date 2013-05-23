@@ -60,7 +60,7 @@ class FacebookHelper extends Helper
             $parameters
                 + array( 'async' => true, 'fbAsyncInit' => '', 'appId' => ( string ) $this->facebook->getAppId( ),
                     'xfbml' => false, 'oauth' => true, 'status' => false, 'cookie' => true,
-                    'logging' => $this->logging, 'culture' => $this->culture, ) );
+                    'logging' => $this->logging, 'culture' => $this->culture, 'onlycode' => false ) );
   }
   
   public function loginButton( $parameters = array( ), $name = null )
@@ -68,13 +68,16 @@ class FacebookHelper extends Helper
     $name = $name ? : 'FOSFacebookBundle::loginButton.html.php';
     return $this->templating
         ->render( $name,
-            $parameters + array( 'autologoutlink' => 'false', 'label' => '', 'scope' => implode( ',', $this->scope ), ) );
+            $parameters
+                + array( 'autologoutlink' => 'false', 'label' => '', 'scope' => implode( ',', $this->scope ),
+                    'onlycode' => false ) );
   }
   
-  public function renderOnClickLogin( )
+  public function renderOnClickLogin( $onlycode = false )
   {
     return $this->templating
-        ->render( 'FOSFacebookBundle::triggerLogin.html.twig', array( 'scope' => implode( ',', $this->scope ) ) );
+        ->render( 'FOSFacebookBundle::triggerLogin.html.twig',
+            array( 'scope' => implode( ',', $this->scope ), 'onlycode' => false ) );
   }
   
   public function logoutUrl( $parameters = array( ), $name = null )
