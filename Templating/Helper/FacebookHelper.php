@@ -77,7 +77,7 @@ class FacebookHelper extends Helper
   {
     return $this->templating
         ->render( 'FOSFacebookBundle::triggerLogin.html.twig',
-            array( 'scope' => implode( ',', $this->scope ), 'onlycode' => false ) );
+            array( 'scope' => implode( ',', $this->scope ), 'onlycode' => $onlycode ) );
   }
   
   public function logoutUrl( $parameters = array( ), $name = null )
