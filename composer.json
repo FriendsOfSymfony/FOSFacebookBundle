@@ -21,11 +21,10 @@
         "symfony/framework-bundle": ">=2.1",
         "symfony/security-bundle": ">=2.1",
         "symfony/twig-bundle": ">=2.1",
-        "facebook/php-sdk": "dev-master"
+        "facebook/php-sdk": ">=v3.2.2"
     },
     "autoload": {
         "psr-0": { "FOS\\FacebookBundle": "" }
     },
-    "target-dir": "FOS/FacebookBundle",
-    "minimum-stability": "stable"
+    "target-dir": "FOS/FacebookBundle"
 }
