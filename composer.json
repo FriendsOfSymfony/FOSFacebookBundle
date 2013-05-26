@@ -26,5 +26,6 @@
     "autoload": {
         "psr-0": { "FOS\\FacebookBundle": "" }
     },
-    "target-dir": "FOS/FacebookBundle"
+    "target-dir": "FOS/FacebookBundle",
+    "minimum-stability": "stable"
 }
