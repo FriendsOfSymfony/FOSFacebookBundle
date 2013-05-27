@@ -73,11 +73,16 @@ class FacebookHelper extends Helper
                     'onlycode' => false ) );
   }
   
-  public function renderOnClickLogin( $onlycode = false )
+  public function scope( $name = null )
   {
-    return $this->templating
-        ->render( 'FOSFacebookBundle::triggerLogin.html.twig',
-            array( 'scope' => implode( ',', $this->scope ), 'onlycode' => $onlycode ) );
+    $name = $name ? : 'FOSFacebookBundle::scope.html.twig';
+    return $this->templating->render( $name, array( 'scope' => implode( ',', $this->scope ) ) );
+  }
+  
+  public function loginUrl( $redirectUrl, $parameters = array( ) )
+  {
+    $parameters[ "redirect_uri" ] = $redirectUrl . "?facebook=true";
+    return $this->facebook->getLoginUrl( $parameters + array( 'scope' => implode( ',', $this->scope ) ) );
   }
   
   public function logoutUrl( $parameters = array( ), $name = null )

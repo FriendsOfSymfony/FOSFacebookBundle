@@ -41,8 +41,8 @@ class FacebookExtension extends \Twig_Extension
             array( 'is_safe' => array( 'html' ) )),
         'facebook_login_button' => new \Twig_Function_Method( $this, 'renderLoginButton',
             array( 'is_safe' => array( 'html' ) )),
-        'facebook_trigger_login' => new \Twig_Function_Method( $this, 'renderOnClickLogin',
-            array( 'is_safe' => array( 'html' ) )),
+        'facebook_scope' => new \Twig_Function_Method( $this, 'renderScope', array( 'is_safe' => array( 'html' ) )),
+        'facebook_login_url' => new \Twig_Function_Method( $this, 'renderLoginUrl', array( 'is_safe' => array( 'html' ) )),
         'facebook_logout_url' => new \Twig_Function_Method( $this, 'renderLogoutUrl',
             array( 'is_safe' => array( 'html' ) )), );
   }
@@ -79,12 +79,21 @@ class FacebookExtension extends \Twig_Extension
   }
   
   /**
-   * @see FacebookHelper::renderOnClicLogin()
+   * @see FacebookHelper::scope()
    */
   
-  public function renderOnClickLogin( $onlycode = false )
+  public function renderScope( )
   {
-    return $this->container->get( 'fos_facebook.helper' )->renderOnClickLogin( $onlycode );
+    return $this->container->get( 'fos_facebook.helper' )->scope( );
+  }
+  
+  /**
+   * @see FacebookHelper::authUrl()
+   */
+  
+  public function renderLoginUrl( $redirectUtl, $parameters = array( ) )
+  {
+    return $this->container->get( 'fos_facebook.helper' )->loginUrl( $redirectUtl, $parameters );
   }
   
   /**
