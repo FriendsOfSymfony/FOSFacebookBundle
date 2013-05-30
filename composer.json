@@ -18,14 +18,14 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/http-foundation": ">=2.1,<2.3",
-        "symfony/security": ">=2.1,<2.3",
+        "symfony/http-foundation": ">=2.1,<2.4",
+        "symfony/security": ">=2.1,<2.4",
         "facebook/php-sdk": "3.2.*"
     },
     "require-dev": {
-        "symfony/framework-bundle": ">=2.1,<2.3",
-        "symfony/security-bundle": ">=2.1,<2.3",
-        "symfony/twig-bundle": ">=2.1,<2.3",
+        "symfony/framework-bundle": ">=2.1,<2.4",
+        "symfony/security-bundle": ">=2.1,<2.4",
+        "symfony/twig-bundle": ">=2.1,<2.4",
         "phpunit/phpunit": "3.7.*"
     },
     "config": {
