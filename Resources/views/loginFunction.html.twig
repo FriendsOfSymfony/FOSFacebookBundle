@@ -1,0 +1,29 @@
+function oauthWindow(location, callbackFnc)
+{
+    var oauthWindow   = window.open(location, 'Facebook', 'location=0,status=0,width=800,height=400');
+    var oauthInterval = window.setInterval(function(){
+        if (oauthWindow.closed) {
+            window.clearInterval(oauthInterval);
+            callbackFnc();
+        }
+    }, 1000);
+}
+
+function fbLogin(callbackFnc){
+	if (typeof (FB) != 'undefined' && FB != null) {
+		FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+				var accessToken = response.authResponse.accessToken;
+				$.post("{{ path('fbWriteAuthInSession') }}", {
+					"accessToken" : accessToken
+				}, function(response) {
+					if (response.accessToken == accessToken)
+					    oauthWindow("{{ path(loginCheck) }}" + "?facebook=true", callbackFnc);
+				});
+			} else if (response.status === 'not_authorized') {
+				// the user is logged in to Facebook,
+				// but has not authenticated your app
+			} else oauthWindow("{{ facebook_login_url(url(loginCheck)) }}", callbackFnc);
+		});
+	} 
+}

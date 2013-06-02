@@ -10,6 +10,7 @@
 			public="false">
 			<argument /> <!-- Provider-shared Key -->
 			<argument type="service" id="fos_facebook.api" />
+			<argument type="service" id="session" />
 		</service>
 
 		<service id="fos_facebook.logout_handler"

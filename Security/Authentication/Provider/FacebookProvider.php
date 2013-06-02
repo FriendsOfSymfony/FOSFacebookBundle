@@ -10,32 +10,28 @@
  */
 
 namespace FOS\FacebookBundle\Security\Authentication\Provider;
-use FOS\FacebookBundle\Security\User\UserManagerInterface;
-
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
-
+use Symfony\Component\HttpFoundation\Session\Session;
+use FOS\FacebookBundle\Security\User\UserManagerInterface;
 use FOS\FacebookBundle\Security\Authentication\Token\FacebookUserToken;
 
 class FacebookProvider implements AuthenticationProviderInterface
 {
-  /**
-   * @var \BaseFacebook
-   */
-  protected $facebook;
   protected $providerKey;
+  protected $facebook;
+  protected $session;
   protected $userProvider;
   protected $userChecker;
   protected $createIfNotExists;
   
-  public function __construct( $providerKey, \BaseFacebook $facebook, UserProviderInterface $userProvider = null,
-      UserCheckerInterface $userChecker = null, $createIfNotExists = false )
+  public function __construct( $providerKey, \BaseFacebook $facebook, Session $session,
+      UserProviderInterface $userProvider = null, UserCheckerInterface $userChecker = null, $createIfNotExists = false )
   {
     if ( null !== $userProvider && null === $userChecker )
     {
@@ -50,9 +46,18 @@ class FacebookProvider implements AuthenticationProviderInterface
     
     $this->providerKey = $providerKey;
     $this->facebook = $facebook;
+    $this->session = $session;
     $this->userProvider = $userProvider;
     $this->userChecker = $userChecker;
     $this->createIfNotExists = $createIfNotExists;
+    
+    // workaraound to use a previous login valid js access token setted in the session
+    $sessionAccessToken = $this->session->get( "fb.accessToken" );
+    $apiAccessToken = $this->facebook->getAccessToken( );
+    $appAccessToken = $this->facebook->getAppId( ) . '|' . $this->facebook->getAppSecret( );
+    
+    if ( $sessionAccessToken !== $apiAccessToken && $apiAccessToken === $appAccessToken )
+      $this->facebook->setAccessToken( $sessionAccessToken );
   }
   
   public function authenticate( TokenInterface $token )

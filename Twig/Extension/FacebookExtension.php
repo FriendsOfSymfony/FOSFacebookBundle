@@ -42,7 +42,10 @@ class FacebookExtension extends \Twig_Extension
         'facebook_login_button' => new \Twig_Function_Method( $this, 'renderLoginButton',
             array( 'is_safe' => array( 'html' ) )),
         'facebook_scope' => new \Twig_Function_Method( $this, 'renderScope', array( 'is_safe' => array( 'html' ) )),
-        'facebook_login_url' => new \Twig_Function_Method( $this, 'renderLoginUrl', array( 'is_safe' => array( 'html' ) )),
+        'facebook_login_function' => new \Twig_Function_Method( $this, 'renderLoginFunction',
+            array( 'is_safe' => array( 'html' ) )),
+        'facebook_login_url' => new \Twig_Function_Method( $this, 'renderLoginUrl',
+            array( 'is_safe' => array( 'html' ) )),
         'facebook_logout_url' => new \Twig_Function_Method( $this, 'renderLogoutUrl',
             array( 'is_safe' => array( 'html' ) )), );
   }
@@ -85,6 +88,15 @@ class FacebookExtension extends \Twig_Extension
   public function renderScope( )
   {
     return $this->container->get( 'fos_facebook.helper' )->scope( );
+  }
+  
+  /**
+   * @see FacebookHelper::loginFunction()
+   */
+  
+  public function renderLoginFunction( $loginCheck )
+  {
+    return $this->container->get( 'fos_facebook.helper' )->loginFunction( $loginCheck );
   }
   
   /**

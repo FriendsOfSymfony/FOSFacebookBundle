@@ -1,0 +1,4 @@
+fbWriteAuthInSession:
+    pattern:  /fb/writeAuthInSession
+    defaults: { _controller: FOSFacebookBundle:Auth:writeAuthInSession }
+    methods: [POST]

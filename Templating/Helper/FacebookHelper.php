@@ -85,6 +85,12 @@ class FacebookHelper extends Helper
     return $this->facebook->getLoginUrl( $parameters + array( 'scope' => implode( ',', $this->scope ) ) );
   }
   
+  public function loginFunction( $loginCheck, $name = null )
+  {
+    $name = $name ? : 'FOSFacebookBundle::loginFunction.html.twig';
+    return $this->templating->render( $name, array( 'loginCheck' => $loginCheck ) );
+  }
+  
   public function logoutUrl( $parameters = array( ), $name = null )
   {
     return $this->facebook->getLogoutUrl( $parameters );
