@@ -50,21 +50,3 @@ $(document).ready(function() {
   	} 
   }
 });
-function fbLogin(callbackFnc){
-	if (typeof (FB) != 'undefined' && FB != null) {
-		FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-				var accessToken = response.authResponse.accessToken;
-				$.post("{{ path('fbWriteAuthInSession') }}", {
-					"accessToken" : accessToken
-				}, function(response) {
-					if (response.accessToken == accessToken)
-					    oauthWindow("{{ path(loginCheck) }}" + "?facebook=true", callbackFnc);
-				});
-			} else if (response.status === 'not_authorized') {
-				// the user is logged in to Facebook,
-				// but has not authenticated your app
-			} else oauthWindow("{{ facebook_login_url(url(loginCheck)) }}", callbackFnc);
-		});
-	} 
-}
