@@ -1,14 +1,55 @@
-function oauthWindow(location, callbackFnc)
-{
-    var oauthWindow   = window.open(location, 'Facebook', 'location=0,status=0,width=800,height=400');
-    var oauthInterval = window.setInterval(function(){
-        if (oauthWindow.closed) {
-            window.clearInterval(oauthInterval);
-            callbackFnc();
-        }
-    }, 1000);
-}
-
+$(document).ready(function() {
+  (function($){
+      //  inspired by DISQUS
+      $.oauthpopup = function(options)
+      {
+          if (!options || !options.path) {
+              throw new Error("options.path must not be empty");
+          }
+          options = $.extend({
+              windowName: 'ConnectWithOAuth' // should not include space for IE
+            , windowOptions: 'location=0,status=0,width=800,height=400'
+            , callback: function(){ window.location.reload(); }
+          }, options);
+  
+          var oauthWindow   = window.open(options.path, options.windowName, options.windowOptions);
+          var oauthInterval = window.setInterval(function(){
+              if (oauthWindow.closed) {
+                  window.clearInterval(oauthInterval);
+                  options.callback();
+              }
+          }, 1000);
+      };
+  })(jQuery);
+  
+  function fbLogin(callbackFnc){
+  	if (typeof (FB) != 'undefined' && FB != null) {
+  		FB.getLoginStatus(function(response) {
+  			if (response.status === 'connected') {
+  				var accessToken = response.authResponse.accessToken;
+  				$.post("{{ path('fbWriteAuthInSession') }}", {
+  					"accessToken" : accessToken
+  				}, function(response) {
+  					if (response.accessToken == accessToken) {
+  					    $.oauthpopup({
+                			path : "{{ path(loginCheck) }}" + "?facebook=true",
+                			callback : callbackFnc
+                		});
+  					}
+  				});
+  			} else if (response.status === 'not_authorized') {
+  				// the user is logged in to Facebook,
+  				// but has not authenticated your app
+  			} else {
+  			    $.oauthpopup({
+        			path : "{{ facebook_login_url(url(loginCheck)) }}",
+        			callback : callbackFnc
+        		});
+  			}
+  		});
+  	} 
+  }
+});
 function fbLogin(callbackFnc){
 	if (typeof (FB) != 'undefined' && FB != null) {
 		FB.getLoginStatus(function(response) {
