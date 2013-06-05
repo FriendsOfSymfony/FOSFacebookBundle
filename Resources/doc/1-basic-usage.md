@@ -4,15 +4,15 @@ Basic usage
 
 1. Add the following lines in your composer.json:
 
-  ```yaml
+  ```json
   {
-    "require": {
-      "friendsofsymfony/facebook-bundle": "1.1.*"
-    }
+      "require": {
+        "friendsofsymfony/facebook-bundle": "1.1.*"
+      }
   }
   ```
 
-2. Run the composer to download the bundle
+2. Run the composer to download the bundle:
   ```bash
   $ php composer.phar update friendsofsymfony/facebook-bundle
   ```
@@ -101,7 +101,7 @@ Basic usage
         defaults: { _controller: AcmeDemoBundle:Welcome:index }
     ```
 
-7. Optionally define a custom user provider class and use it as the provider or define path for login
+7. Optionally define a custom user provider class and use it as the provider or define path for login:
   ```yaml
     # application/config/config.yml
     security:
@@ -131,7 +131,7 @@ Basic usage
                     server_url: "http://localhost/facebookApp/app_dev.php/"     
   ```
 
-8. Optionally use access control to secure specific URLs
+8. Optionally use access control to secure specific URLs:
 
     ```yaml
     # application/config/config.yml
@@ -184,7 +184,7 @@ Add the following code in one of your templates:
 {# inside a twig template #}
 {{ facebook_login_button({'autologoutlink': true}) }}
 ```
-If you want customize the the login button, you can set these parameters:
+If you want customize the login button, you can set these parameters:
 
   - label     : The text that shows in the button.
   - showFaces : Specifies whether to show faces underneath the Login button.

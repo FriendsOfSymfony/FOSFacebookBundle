@@ -1,5 +1,5 @@
 Example Server-Side Facebook Login using Mobile Apps
--------------------------------------------------------
+----------------------------------------------------
 
 If you use the JavaScript SDK to login by web, the normal flow would be as follows:
 

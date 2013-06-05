@@ -1,5 +1,5 @@
 Additional Resources
-=================
+====================
 
 
 Avoiding redirect to Facebook login page

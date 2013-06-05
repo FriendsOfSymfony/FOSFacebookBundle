@@ -103,7 +103,7 @@ to the provider id in the "provider" section in ```config.yml```:
         }
     }
 
-Finally one also needs to add getFacebookId() and setFBData() methods to the User model.
+Finally, one also needs to add getFacebookId() and setFBData() methods to the User model.
 The following example also adds "firstname" and "lastname" properties, using the Doctrine ORM:
 
     <?php
