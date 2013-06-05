@@ -33,7 +33,7 @@ class FacebookSessionPersistence extends \BaseFacebook
             $this->setFileUploadSupport($config['fileUpload']);
         }
         // Add trustProxy configuration
-        $this->trustForwarded = isset($config['trustForwarded']) ? $config['trustForwarded'] : Request::isProxyTrusted();
+        $this->trustForwarded = isset($config['trustForwarded']) ? $config['trustForwarded'] : Request::getTrustedProxies();
     }
 
     public function getLoginUrl($params = array())
