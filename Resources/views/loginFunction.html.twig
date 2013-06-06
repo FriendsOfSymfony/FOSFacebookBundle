@@ -1,4 +1,4 @@
-function fbLogin(callbackFnc){
+function fbLogin(callbackFnc, notAuthCallbackFnc){
   	if (typeof (FB) != 'undefined' && FB != null) {
   		FB.getLoginStatus(function(response) {
   			if (response.status === 'connected') {
@@ -16,6 +16,9 @@ function fbLogin(callbackFnc){
   			} else if (response.status === 'not_authorized') {
   				// the user is logged in to Facebook,
   				// but has not authenticated your app
+  				if (typeof fnc === "undefined" || fnc===null)
+                   notAuthCallbackFnc = function(){};
+  				notAuthCallbackFnc();
   			} else {
   			    $.oauthpopup({
         			path : "{{ facebook_login_url(url(loginCheck)) }}",
