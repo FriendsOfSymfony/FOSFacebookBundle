@@ -1,22 +1,18 @@
-function doFBLogin(accessToken, callbackFnc){
-	$.post("{{ path('fbWriteAuthInSession') }}", {
-		"accessToken" : accessToken
-	}, function(response) {
-		if (response.accessToken == accessToken) {
-		    $.oauthpopup({
-        			path : "{{ path(loginCheck) }}" + "?facebook=true",
-        			callback : callbackFnc
-        		});
-		}
-	});
-}
-
 function fbLogin(callbackFnc, notAuthCallbackFnc){
   	if (typeof (FB) != 'undefined' && FB != null) {
   		FB.getLoginStatus(function(response) {
-  			if (response.status === 'connected' || response.status === 'not_authorized') {
+  			if (response.status === 'connected') {
   			  var accessToken = response.authResponse.accessToken;
-  			  doFBLogin(accessToken, notAuthCallbackFnc);
+  			  $.post("{{ path('fbWriteAuthInSession') }}", {
+            		"accessToken" : accessToken
+            	}, function(response) {
+            		if (response.accessToken == accessToken) {
+            		    $.oauthpopup({
+                    			path : "{{ path(loginCheck) }}" + "?facebook=true",
+                    			callback : callbackFnc
+                    		});
+            		}
+            	});
   			}
   			else {
   			    $.oauthpopup({
