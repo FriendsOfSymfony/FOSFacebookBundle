@@ -17,6 +17,7 @@ function fbLogin(callbackFnc, notAuthCallbackFnc){
   			if (response.status === 'connected' || response.status === 'not_authorized') {
   			  var accessToken = response.authResponse.accessToken;
   			  doFBLogin(accessToken, notAuthCallbackFnc);
+  			}
   			else {
   			    $.oauthpopup({
         			path : "{{ facebook_login_url(url(loginCheck)) }}",
@@ -26,3 +27,4 @@ function fbLogin(callbackFnc, notAuthCallbackFnc){
   		});
   	} 
   }
+}
