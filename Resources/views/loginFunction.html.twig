@@ -16,7 +16,7 @@ function fbLogin(callbackFnc, notAuthCallbackFnc){
   			} else if (response.status === 'not_authorized') {
   				// the user is logged in to Facebook,
   				// but has not authenticated your app
-  				if (typeof fnc === "undefined" || fnc===null)
+  				if (typeof notAuthCallbackFnc === "undefined" || notAuthCallbackFnc===null)
                    notAuthCallbackFnc = function(){};
   				notAuthCallbackFnc();
   			} else {
