@@ -78,7 +78,8 @@ class FacebookHelper extends Helper
             'maxRows'         => '1',
             'scope'           => implode(',', $this->scope),
             'registrationUrl' => '',
-            'size'            => 'medium'
+            'size'            => 'medium',
+            'onlogin'         => ''
         ));
     }
 

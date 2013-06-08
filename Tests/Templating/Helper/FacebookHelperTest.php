@@ -74,7 +74,8 @@ class FacebookHelperTest extends \PHPUnit_Framework_TestCase
                 'maxRows'         => '1',
                 'scope'           => '1,2,3',
                 'registrationUrl' => '',
-                'size'            => 'medium'
+                'size'            => 'medium',
+                'onlogin'         => ''
             ))
             ->will($this->returnValue($expected));
 
