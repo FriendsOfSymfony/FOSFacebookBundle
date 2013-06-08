@@ -110,10 +110,10 @@ The following example also adds "firstname" and "lastname" properties, using the
 
     namespace Acme\MyBundle\Entity;
 
-    use FOS\UserBundle\Entity\User as BaseUser;
+    use FOS\UserBundle\Entity\User as FOSBaseUser;
     use Doctrine\ORM\Mapping as ORM;
 
-    class User extends BaseUser
+    class User extends FOSBaseUser
     {
         /**
          * @var string

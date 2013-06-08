@@ -196,33 +196,10 @@ If you want customize the login button, you can set these parameters:
 
 
 Note that with this approach, only the login and connecting with Facebook will
-be handled. The step of logging in the user into your Symfony2 application
-still needs to be triggered. To do this you, will in most cases simply subscribe
+be handled. The step of logging in (and out) the user into your Symfony2 application
+still needs to be triggered. To do this you will in most cases simply subscribe
 to the `auth.statusChange` event and then redirect to the `check_path`:
-```html+jinja
-<script>
-    function goLogIn(){
-        window.location = "{{ path('_security_check') }}";
-    }
-    
-    function onFbInit() {
-        if (typeof(FB) != 'undefined' && FB != null ) {
-            FB.Event.subscribe('auth.statusChange', function(response) {
-                setTimeout(goLogIn, 500);
-            });
-        }
-    }
-</script>
-```  
-Note that we wait 500ms before redirecting to let the browser dealing with the 
-Facebook cookie. You can avoid this step, but you might get this error message:
-*"The Facebook user could not be retrieved from the session."*
 
-The `_security_check` route would need to point to a `/login_check` pattern
-to match the above configuration.
-
-Also, you need to trigger the logout action, so, using the same event (`auth.statusChange`), add a simple
-check for `response.session` to redirect to the `logout` route:
 ```html+jinja
 <script>
     function goLogIn(){
@@ -243,3 +220,14 @@ check for `response.session` to redirect to the `logout` route:
 </script>
 ```
 
+Note that we need to include this code before the initialization of the Facebook
+Javascript SDK Initialization in order to have the onFbInit() event listener
+correctly triggered (in this case between the beginning of the 'body' tag and
+the templating helper provided by this bundle)
+
+We wait 500ms before redirecting to let the browser deal with the Facebook cookie.
+You can avoid this step, but you might get this error message:
+*"The Facebook user could not be retrieved from the session."*
+
+The `_security_check` route would need to point to a `/login_check` pattern
+to match the above configuration.
