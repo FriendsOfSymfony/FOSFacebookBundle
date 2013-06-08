@@ -193,6 +193,7 @@ If you want customize the login button, you can set these parameters:
   - scope     : A comma separated list of extended permissions.
   - registrationUrl : Registration page url. If the user has not registered for your site, they will be redirected to the URL you specify in the registrationUrl parameter.
   - size      : Different sized buttons: small, medium, large, xlarge (default: medium).
+  - onlogin   : Set a URL to be redirected after successful login
 
 
 Note that with this approach, only the login and connecting with Facebook will
