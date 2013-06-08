@@ -6,7 +6,7 @@ If you still want to use the FOSUserBundle form login, add the "chain_provider" 
 >      providers:
 >        chain_provider:
 >           chain:
->               providers: [fos_user_bundle, my_fos_facebook_provider]
+>               providers: [fos_userbundle, my_fos_facebook_provider]
 >        fos_user_bundle: ...
 >        my_fos_facebook_provider: ...
 
