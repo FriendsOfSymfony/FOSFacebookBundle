@@ -1,2 +1,4 @@
-<fb:login-button show-faces="<?php echo $showFaces; ?>" width="<?php echo $width; ?>" max-rows="<?php echo $maxRows; ?>" scope="<?php echo $scope; ?>" registration-url="<?php echo $registrationUrl; ?>" size="<?php echo $size; ?>"  autologoutlink="<?php echo $autologoutlink; ?>"><?php echo $label; ?></fb:login-button>
+<div data-show-faces="<?php echo $showFaces; ?>" data-width="<?php echo $width; ?>" data-max-rows="<?php echo $maxRows; ?>" data-scope="<?php echo $scope; ?>" data-registration-url="<?php echo $registrationUrl; ?>" data-size="<?php echo $size; ?>"  data-autologoutlink="<?php echo $autologoutlink; ?>">
+  <?php echo $label; ?>
+</div>
 
