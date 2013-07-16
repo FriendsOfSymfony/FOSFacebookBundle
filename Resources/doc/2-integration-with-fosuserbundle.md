@@ -32,8 +32,9 @@ to the provider id in the "provider" section in ```config.yml```:
     use Symfony\Component\Security\Core\User\UserInterface;
     use \BaseFacebook;
     use \FacebookApiException;
+    use FOS\FacebookBundle\Security\User\UserManagerInterface;
 
-    class FacebookProvider implements UserProviderInterface
+    class FacebookProvider implements UserProviderInterface, UserManagerInterface
     {
         /**
          * @var \Facebook
@@ -63,34 +64,20 @@ to the provider id in the "provider" section in ```config.yml```:
         {
             $user = $this->findUserByFbId($username);
 
-            try {
-                $fbdata = $this->facebook->api('/me');
-            } catch (FacebookApiException $e) {
-                $fbdata = null;
-            }
-
-            if (!empty($fbdata)) {
-                if (empty($user)) {
-                    $user = $this->userManager->createUser();
-                    $user->setEnabled(true);
-                    $user->setPassword('');
-                }
-
-                // TODO use http://developers.facebook.com/docs/api/realtime
-                $user->setFBData($fbdata);
-
-                if (count($this->validator->validate($user, 'Facebook'))) {
-                    // TODO: the user was found obviously, but doesnt match our expectations, do something smart
-                    throw new UsernameNotFoundException('The facebook user could not be stored');
-                }
-                $this->userManager->updateUser($user);
-            }
-
             if (empty($user)) {
                 throw new UsernameNotFoundException('The user is not authenticated on facebook');
             }
 
-            return $user;
+            return $this->updateUserData($user);
+        }
+
+        function createUserFromUid($uid)
+        {
+            $user = $this->userManager->createUser();
+            $user->setEnabled(true);
+            $user->setPassword('');
+
+            return $this->updateUserData($user);
         }
 
         public function refreshUser(UserInterface $user)
@@ -100,6 +87,35 @@ to the provider id in the "provider" section in ```config.yml```:
             }
 
             return $this->loadUserByUsername($user->getFacebookId());
+        }
+
+        /**
+         * @param $user
+         * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+         * @return UserInterface
+         */
+        private function updateUserData($user)
+        {
+            try {
+                $fbdata = $this->facebook->api('/me');
+            } catch (FacebookApiException $e) {
+                $fbdata = null;
+            }
+
+            if (empty($fbdata)) {
+                throw new UsernameNotFoundException('The user is not authenticated on facebook');
+            }
+
+            // TODO use http://developers.facebook.com/docs/api/realtime
+            $user->setFBData($fbdata);
+
+            if (count($this->validator->validate($user, 'Facebook'))) {
+                // TODO: the user was found obviously, but doesnt match our expectations, do something smart
+                throw new UsernameNotFoundException('The facebook user could not be stored');
+            }
+            $this->userManager->updateUser($user);
+
+            return $user;
         }
     }
 
