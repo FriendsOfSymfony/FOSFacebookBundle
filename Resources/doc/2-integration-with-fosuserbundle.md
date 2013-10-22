@@ -18,7 +18,7 @@ to the provider id in the "provider" section in ```config.yml```:
             class: Acme\MyBundle\Security\User\Provider\FacebookProvider
             arguments:
                 facebook: "@fos_facebook.api"
-                userManager: "@fos_user.user_manager"
+                userManager: "@fos_user.user_provider.username"
                 validator: "@validator"
 
   ```
