@@ -79,7 +79,7 @@ to the provider id in the "provider" section in ```config.yml```:
                 // TODO use http://developers.facebook.com/docs/api/realtime
                 $user->setFBData($fbdata);
 
-                if (count($this->validator->validate($user, 'Facebook'))) {
+                if (count($this->validator->validate($user, ['Default', 'Facebook']))) {
                     // TODO: the user was found obviously, but doesnt match our expectations, do something smart
                     throw new UsernameNotFoundException('The facebook user could not be stored');
                 }
