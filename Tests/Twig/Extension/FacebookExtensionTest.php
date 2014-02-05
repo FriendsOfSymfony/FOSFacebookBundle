@@ -12,7 +12,7 @@
 namespace FOS\FacebookBundle\Tests\Twig\Extension;
 
 use FOS\FacebookBundle\Twig\Extension\FacebookExtension;
-use FOS\FacebookBundle\Templating\Helper\FacebookHelper;
+use Symfony\Component\DependencyInjection\Container;
 
 class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -78,5 +78,26 @@ class FacebookExtensionTest extends \PHPUnit_Framework_TestCase
  
         $extension = new FacebookExtension($containerMock);
         $this->assertSame('returnedValueLogin', $extension->renderLoginButton());
+    }
+
+    /**
+     * @covers FOS\FacebookBundle\Twig\Extension\FacebookExtension::getLoginUrl
+     */
+    public function testGetLoginUrl()
+    {
+        $helper = $this->getMockBuilder('FOS\FacebookBundle\Templating\Helper\FacebookHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container = new Container();
+        $container->set('fos_facebook.helper', $helper);
+
+        $helper->expects($this->once())
+            ->method('loginUrl')
+            ->with(array('foo' => 'bar'))
+            ->will($this->returnValue('http://foo.com'));
+
+        $extension = new FacebookExtension($container);
+        $this->assertEquals('http://foo.com', $extension->getLoginUrl(array('foo' => 'bar')));
     }
 }
