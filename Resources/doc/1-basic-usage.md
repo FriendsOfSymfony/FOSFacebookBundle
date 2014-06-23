@@ -80,20 +80,20 @@ Basic usage
 6. Add this configuration if you want to use the `security component`:
 
   ```yaml
-          # application/config/security.yml
-          security:
-              firewalls:
-                  public:
-                      # since anonymous is allowed users will not be forced to login
-                      pattern:   ^/.*
-                      fos_facebook:
-                          app_url: "http://apps.facebook.com/appName/"
-                          server_url: "http://localhost/facebookApp/"
-                      anonymous: true
-
-              access_control:
-                  - { path: ^/secured/.*, role: [IS_AUTHENTICATED_FULLY] } # This is the route secured with fos_facebook
-                  - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+    # application/config/security.yml
+    security:
+        firewalls:
+            public:
+                # since anonymous is allowed users will not be forced to login
+                pattern:   ^/.*
+                fos_facebook:
+                    app_url: "http://apps.facebook.com/appName/"
+                    server_url: "http://localhost/facebookApp/"
+                anonymous: true
+  
+        access_control:
+            - { path: ^/secured/.*, role: [IS_AUTHENTICATED_FULLY] } # This is the route secured with fos_facebook
+            - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
   ```
 
      You have to add `/secured/` in your routing for this to work. An example would be...
