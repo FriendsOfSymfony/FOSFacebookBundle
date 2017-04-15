@@ -41,7 +41,7 @@ Basic usage
   _security_logout:
       pattern:  /logout
   fos_facebook_channel:
-      resource: "@FOSFacebookBundle/Resources/config/routing.xml"
+      resource: "@FOSFacebookBundle/Resources/config/routing.xml
   ```
 
   ```xml
