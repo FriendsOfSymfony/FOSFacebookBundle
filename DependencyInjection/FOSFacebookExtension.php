@@ -40,7 +40,7 @@ class FOSFacebookExtension extends Extension
             $container->setParameter('fos_facebook.'.$attribute.'.class', $config['class'][$attribute]);
         }
 
-        foreach (array('file', 'app_id', 'secret', 'cookie', 'domain', 'logging', 'culture', 'permissions') as $attribute) {
+        foreach (array('file', 'app_id', 'secret', 'cookie', 'domain', 'logging', 'culture', 'permissions', 'trust_proxy') as $attribute) {
             $container->setParameter('fos_facebook.'.$attribute, $config[$attribute]);
         }
         
